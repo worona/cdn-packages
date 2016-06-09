@@ -1,0 +1,22 @@
+{
+  "name": "cdn-packages-worona",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worona/cdn-packages.git"
+  },
+  "author": "Worona Labs SL | Luis Herranz, @luisherranz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/worona/cdn-packages/issues"
+  },
+  "homepage": "https://github.com/worona/cdn-packages#readme",
+  "dependencies": {
+    "vendors-dashboard-worona": "=1.0.0"
+  }
+}
