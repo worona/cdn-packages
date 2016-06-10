@@ -22,7 +22,6 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-prompt": "^0.2.0",
-    "lodash": "^4.13.1",
     "mongoose": "^4.4.20",
     "semver": "^5.1.0"
   }

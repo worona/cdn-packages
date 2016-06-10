@@ -1,7 +1,6 @@
 const gulp = require('gulp');
 const prompt = require('gulp-prompt');
 const semver = require('semver');
-const lodash = require('lodash');
 const exec = require('child_process').exec;
 const mongoose = require('mongoose');
 const ExtensionSchema = require('./extension-schema');
