@@ -1,7 +1,7 @@
 {
   "name": "cdn-packages-worona",
   "version": "1.0.0",
-  "description": "",
+  "description": "Install worona packages and update the database",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +17,13 @@
   },
   "homepage": "https://github.com/worona/cdn-packages#readme",
   "dependencies": {
-    "vendors-dashboard-worona": "=1.0.0"
+    "vendors-dashboard-worona": "1.0.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-prompt": "^0.2.0",
+    "lodash": "^4.13.1",
+    "mongoose": "^4.4.20",
+    "semver": "^5.1.0"
   }
 }
