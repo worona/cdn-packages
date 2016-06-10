@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/worona/cdn-packages#readme",
   "dependencies": {
-    "vendors-dashboard-worona": "1.0.4"
+    "vendors-dashboard-worona": "1.0.5"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

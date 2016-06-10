@@ -57,7 +57,7 @@ const Extension = new Schema({
   type: {
     type: String,
     required: true,
-    enum: ['vendors', 'core', 'theme', 'extension'],
+    enum: ['vendor', 'core', 'theme', 'extension'],
   },
   service: {
     type: String,
