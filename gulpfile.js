@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const ExtensionSchema = require('./extension-schema');
 const ExtensionModel = mongoose.model('Extension', ExtensionSchema);
 const config = require('./config.json');
+mongoose.Promise = global.Promise;
 
 const getValues = name => {
   try {
