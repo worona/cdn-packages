@@ -54,6 +54,11 @@ const Extension = new Schema({
     required: true,
     match: [/^[a-zA-Z0-9]+$/, 'Slug must be in camelcase'],
   },
+  namespace: {
+    type: String,
+    required: true,
+    match: [/^[a-zA-Z0-9]+$/, 'Namespace must be in camelcase'],
+  },
   type: {
     type: String,
     required: true,
