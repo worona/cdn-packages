@@ -1,29 +1,27 @@
 {
-  "name": "cdn-packages-worona",
+  "name": "worona-cdn",
   "version": "1.0.0",
-  "description": "Install worona packages and update the database",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "Worona CDN",
+  "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/worona/cdn-packages.git"
+    "url": "git+https://github.com/worona/worona-cdn.git"
   },
-  "author": "Worona Labs SL | Luis Herranz, @luisherranz",
+  "keywords": [
+    "worona",
+    "wordpress",
+    "cdn"
+  ],
+  "author": "Worona Labs SL | Luis Herranz @luisherranz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/worona/cdn-packages/issues"
+    "url": "https://github.com/worona/worona-cdn/issues"
   },
-  "homepage": "https://github.com/worona/cdn-packages#readme",
-  "dependencies": {
-    "accounts-dashboard-extension-worona": "1.1.2",
-    "core-dashboard-worona": "1.1.7"
-  },
+  "homepage": "https://github.com/worona/worona-cdn#readme",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-prompt": "^0.2.0",
-    "mongoose": "^4.4.20",
-    "semver": "^5.1.0"
-  }
+    "eslint": "^2.5.3",
+    "eslint-config-airbnb": "^6.2.0",
+    "eslint-plugin-react": "^4.2.3"
+  },
+  "dependencies": {}
 }

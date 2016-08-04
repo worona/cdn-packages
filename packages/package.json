@@ -1,0 +1,29 @@
+{
+  "name": "cdn-packages-worona",
+  "version": "1.0.0",
+  "description": "Install worona packages and update the database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worona/cdn-packages.git"
+  },
+  "author": "Worona Labs SL | Luis Herranz, @luisherranz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/worona/cdn-packages/issues"
+  },
+  "homepage": "https://github.com/worona/cdn-packages#readme",
+  "dependencies": {
+    "accounts-dashboard-extension-worona": "1.1.2",
+    "core-dashboard-worona": "1.1.7"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-prompt": "^0.2.0",
+    "mongoose": "^4.4.20",
+    "semver": "^5.1.0"
+  }
+}
