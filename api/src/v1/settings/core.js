@@ -1,11 +1,12 @@
 export default (req, res) => {
   const extensions = req.db.collection('extensions');
   extensions.find({
-    service: 'dashboard',
+    service: req.params.service,
     core: true,
     type: { $in: ['extension', 'theme'] },
   }, {
     fields: {
+      _id: 0,
       name: 1,
       type: 1,
       namespace: 1,
