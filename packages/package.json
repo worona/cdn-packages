@@ -18,7 +18,7 @@
   "homepage": "https://github.com/worona/cdn-packages#readme",
   "dependencies": {
     "accounts-dashboard-extension-worona": "1.1.2",
-    "core-dashboard-worona": "1.1.7"
+    "core-dashboard-worona": "1.1.9"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
