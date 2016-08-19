@@ -12,10 +12,6 @@ const File = new Schema({
     maxlength: 32,
     match: [/^[a-z0-9]+$/, 'File hash not valid'],
   },
-  chunkName: {
-    type: String,
-    required: true,
-  },
   _id: false,
 });
 

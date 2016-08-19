@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const prompt = require('gulp-prompt');
+const KeyCDN = require('keycdn');
 const semver = require('semver');
 const exec = require('child_process').exec;
 const mongoose = require('mongoose');
@@ -7,6 +8,7 @@ const ExtensionSchema = require('./extension-schema');
 const ExtensionModel = mongoose.model('Extension', ExtensionSchema);
 const config = require('./config.json');
 mongoose.Promise = global.Promise;
+const keycdn = new KeyCDN(config.keycdn.apiKey);
 
 const getValues = name => {
   try {
@@ -50,13 +52,22 @@ const saveExtension = (name, cb) => {
         doc.save(err => {
           mongoose.connection.close()
           if (err) console.log(err);
-          else console.log('\nPackage saved successfully on the database.\nEverything in order!\n\n');
-          cb();
+          else console.log('\nPackage saved successfully on the database.');
+          console.log('\nPurging the cdn...');
+          keycdn.get('zones/purge/' + config.keycdn.zoneId + '.json', function(err, res) {
+            if (err) {
+                console.log('\nError purging the cdn: ', err);
+            } else {
+                console.log('\nPurging succeed!\nEverything in order!\n\n');
+            }
+            cb();
+          });
         });
       }
     });
   }
 };
+
 
 gulp.task('validate', cb => {
   console.log('\n');
