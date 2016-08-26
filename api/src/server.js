@@ -6,15 +6,6 @@ function getApp() {
   return require('./app').default;
 }
 
-if (module.hot) {
-  module.hot.accept('./app', () => {
-    console.log('🔁  HMR Reloading `./app`...');
-  });
-  console.info('✅  Server-side HMR Enabled!');
-} else {
-  console.info('❌  Server-side HMR Not Supported.');
-}
-
 export default express()
   .use((req, res) => getApp().handle(req, res))
   .listen(config.port, error => {
