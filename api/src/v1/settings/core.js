@@ -11,6 +11,7 @@ export default (req, res) => {
       type: 1,
       namespace: 1,
       'prod.main': 1,
+      'prod.assets': 1,
     },
   }).toArray((error, docs) => {
     if (error) throw new Error('Error retrieving docs from extensions');
