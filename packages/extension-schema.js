@@ -15,6 +15,18 @@ const File = new Schema({
   _id: false,
 });
 
+const Assets = new Schema({
+  css: {
+    type: [String],
+    required: false,
+  },
+  fonts: {
+    type: [String],
+    required: false,
+  },
+  _id: false,
+})
+
 const Files = new Schema({
   files: {
     type: [File],
@@ -22,6 +34,10 @@ const Files = new Schema({
   },
   main: {
     type: String,
+    required: true,
+  },
+  assets: {
+    type: Assets,
     required: true,
   },
   _id: false,

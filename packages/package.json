@@ -18,10 +18,11 @@
   "homepage": "https://github.com/worona/cdn-packages#readme",
   "dependencies": {
     "accounts-dashboard-extension-worona": "1.1.6",
-    "bulma-dashboard-theme-worona": "1.1.4",
+    "bulma-dashboard-theme-worona": "1.1.6",
     "connection-dashboard-extension-worona": "1.1.2",
-    "core-dashboard-worona": "1.1.11",
-    "sites-dashboard-extension-worona": "1.1.0"
+    "core-dashboard-worona": "1.1.12",
+    "sites-dashboard-extension-worona": "1.1.0",
+    "subscriptions-dashboard-extension-worona": "1.1.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
