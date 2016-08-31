@@ -109,6 +109,12 @@ const Extension = new Schema({
     required: true,
     default: 1,
   },
+  dependencies: {
+    type: [{
+      type: String,
+    }],
+    required: false,
+  },
   dev: {
     type: Files,
     required: true,
