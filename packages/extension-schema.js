@@ -20,12 +20,8 @@ const Assets = new Schema({
     type: [String],
     required: false,
   },
-  fonts: {
-    type: [String],
-    required: false,
-  },
   _id: false,
-})
+});
 
 const Files = new Schema({
   files: {
