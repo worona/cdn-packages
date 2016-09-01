@@ -10,6 +10,7 @@ export default (req, res) => {
       name: 1,
       type: 1,
       namespace: 1,
+      dependencies: 1,
       'prod.main': 1,
       'prod.assets': 1,
     },
