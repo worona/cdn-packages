@@ -4,8 +4,8 @@ const KeyCDN = require('keycdn');
 const semver = require('semver');
 const exec = require('child_process').exec;
 const mongoose = require('mongoose');
-const ExtensionSchema = require('./extension-schema');
-const ExtensionModel = mongoose.model('Extension', ExtensionSchema);
+const PackageSchema = require('./package-schema');
+const PackageModel = mongoose.model('Package', PackageSchema);
 const config = require('./config.json');
 mongoose.Promise = global.Promise;
 const keycdn = new KeyCDN(config.keycdn.apiKey);
@@ -23,28 +23,28 @@ const getValues = name => {
   }
 }
 
-const getExtension = name => {
+const getPackage = name => {
   const values = getValues(name);
-  return new ExtensionModel(values);
+  return new PackageModel(values);
 }
 
-const saveExtension = (name, cb) => {
-  const extension = getExtension(name);
-  const error = extension.validateSync();
+const savePackage = (name, cb) => {
+  const pkg = getPackage(name);
+  const error = pkg.validateSync();
   if (error) {
     console.log('\n', error, '\n');
     cb();
   } else {
     console.log('\nValidation succeed.');
     mongoose.connect(config.mongoUrl);
-    ExtensionModel.findOne({ name: name }, function (err, doc) {
+    PackageModel.findOne({ name: name }, function (err, doc) {
       if (err) {
         console.log('\nError retriving doc: ', err);
         cb();
       } else {
         if (doc === null) {
           console.log('\nPackage not found. Creating new entry.');
-          doc = getExtension(name);
+          doc = getPackage(name);
         } else {
           console.log('\nPackage found. Updating values.');
           Object.assign(doc, getValues(name));
@@ -76,8 +76,8 @@ gulp.task('validate', cb => {
 		name: 'package',
 		message: 'Which package do you want to validate?'
 	}, function(res){
-    const extension = getExtension(res.package);
-    const error = extension.validateSync();
+    const pkg = getPackage(res.package);
+    const error = pkg.validateSync();
     if (!error) console.log('\nValidation succeed.\n');
     else console.log('\n', error, '\n');
     cb();
@@ -91,7 +91,7 @@ gulp.task('save', cb => {
 		name: 'package',
 		message: 'Which package do you want to save?'
 	}, function(res){
-    saveExtension(res.package, cb);
+    savePackage(res.package, cb);
   }));
 });
 
@@ -126,7 +126,7 @@ gulp.task('install', cb => {
           cb();
         } else {
           console.log('Installation succeed.');
-          saveExtension(res1.package, cb);
+          savePackage(res1.package, cb);
         }
       });
     }));

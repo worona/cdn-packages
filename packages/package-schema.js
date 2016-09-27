@@ -39,7 +39,20 @@ const Files = new Schema({
   _id: false,
 });
 
-const Extension = new Schema({
+const Menu = new Schema({
+  category: {
+    type: String,
+    required: true,
+    enum: ['General', 'Appearance', 'Extensions', 'Publish'],
+  },
+  order: {
+    type: Number,
+    min: 1,
+    max: 1000,
+  },
+});
+
+const Package = new Schema({
   name: {
     type: String,
     required: true,
@@ -76,6 +89,9 @@ const Extension = new Schema({
     type: String,
     required: true,
     enum: ['dashboard', 'app', 'amp', 'fbia'],
+  },
+  menu: {
+    type: Menu,
   },
   authors: {
     type: [{
@@ -124,8 +140,8 @@ const Extension = new Schema({
     required: true,
   },
 }, {
-  collection: 'extensions',
+  collection: 'packages',
   timestamps: true,
 });
 
-module.exports = Extension;
+module.exports = Package;

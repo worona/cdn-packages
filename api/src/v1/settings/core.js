@@ -1,5 +1,5 @@
 export default (req, res) => {
-  const extensions = req.db.collection('extensions');
+  const extensions = req.db.collection('packages');
   extensions.find({
     service: req.params.service,
     core: true,
