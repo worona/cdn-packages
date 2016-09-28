@@ -103,8 +103,9 @@ gulp.task('install', cb => {
 		name: 'package',
 		message: 'Which package do you want to install?'
 	}, function(res1){
+    const packageStr = res1.package.trim();
     const packageJson = require('./package.json');
-    const version = packageJson.dependencies[res1.package];
+    const version = packageJson.dependencies[packageStr];
     const defaultVersion = version ? semver.inc(version, 'patch') : '1.0.0';
     gulp.src('package.json')
     .pipe(prompt.prompt({
@@ -113,7 +114,7 @@ gulp.task('install', cb => {
       message: 'Which version do you want to install?',
       default: defaultVersion,
     }, function(res2) {
-      const packageName = res1.package + '@' + res2.version;
+      const packageName = packageStr + '@' + res2.version;
       console.log('\nInstalling ' + packageName + '. Please wait...');
       exec('npm install --save --save-exact ' + packageName, function(error, stdout, stderr) {
         console.log('\n');
@@ -126,7 +127,7 @@ gulp.task('install', cb => {
           cb();
         } else {
           console.log('Installation succeed.');
-          savePackage(res1.package, cb);
+          savePackage(packageStr, cb);
         }
       });
     }));

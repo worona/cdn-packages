@@ -4,7 +4,8 @@
   "description": "Install worona packages and update the database",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update-packages": "npm-check-updates -u"
   },
   "repository": {
     "type": "git",
@@ -17,13 +18,14 @@
   },
   "homepage": "https://github.com/worona/cdn-packages#readme",
   "dependencies": {
-    "accounts-dashboard-extension-worona": "1.1.9",
-    "bulma-dashboard-theme-worona": "1.1.10",
-    "connection-dashboard-extension-worona": "1.1.3",
-    "core-dashboard-worona": "1.1.22",
-    "settings-dashboard-extension-worona": "1.0.1",
-    "sites-dashboard-extension-worona": "1.1.2",
-    "subscriptions-dashboard-extension-worona": "1.1.2"
+    "accounts-dashboard-extension-worona": "1.1.10",
+    "bulma-dashboard-theme-worona": "1.1.12",
+    "connection-dashboard-extension-worona": "1.1.4",
+    "core-dashboard-worona": "1.1.23",
+    "npm-check-updates": "^2.8.0",
+    "settings-dashboard-extension-worona": "1.0.2",
+    "sites-dashboard-extension-worona": "1.1.3",
+    "subscriptions-dashboard-extension-worona": "1.1.4"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
