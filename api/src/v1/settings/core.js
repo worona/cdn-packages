@@ -1,6 +1,6 @@
 export default (req, res) => {
-  const extensions = req.db.collection('packages');
-  extensions.find({
+  const packages = req.db.collection('packages');
+  packages.find({
     service: req.params.service,
     core: true,
     type: { $in: ['extension', 'theme'] },
