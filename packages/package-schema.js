@@ -66,6 +66,9 @@ const Package = new Schema({
     type: String,
     required: true,
   },
+  keywords: {
+    type: [String],
+  },
   niceName: {
     type: String,
     required: true,

@@ -3,13 +3,14 @@ var path = require('path');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var FixModuleIdAndChunkIdPlugin = require('fix-moduleid-and-chunkid-plugin');
 
-var definePlugin = function(options) {
-  var nodeEnv = options.env === 'dev' ? 'development' : 'production';
+var definePlugin = function(config) {
+  var nodeEnv = config.env === 'dev' ? 'development' : 'production';
   return new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify(nodeEnv) } });
 };
 
-var lodashModuleReplacementPlugin = function(options) {
+var lodashModuleReplacementPlugin = function() {
   return new LodashModuleReplacementPlugin({
     currying: true,
     flattening: true,
@@ -18,52 +19,78 @@ var lodashModuleReplacementPlugin = function(options) {
   });
 };
 
-var uglifyJsPlugin = function(options) {
-  if (options.env === 'prod')
+var uglifyJsPlugin = function(config) {
+  if (config.env === 'prod')
     return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
 };
 
-var dedupePlugin = function(options) {
-  if (options.env === 'prod')
+var dedupePlugin = function(config) {
+  if (config.env === 'prod')
     return new webpack.optimize.DedupePlugin();
 };
 
-var occurrenceOrderPlugin = function(options) {
-  if (options.env === 'prod')
+var occurrenceOrderPlugin = function(config) {
+  if (config.env === 'prod')
     return new webpack.optimize.OccurrenceOrderPlugin();
 };
 
-var extractTextPlugin = function(options) {
-  if (options.env === 'prod')
-    return new ExtractTextPlugin('css/[name]/' + options.worona.slug + '.styles.[contenthash].css');
+var extractTextPlugin = function(config) {
+  if (config.env === 'prod')
+    return new ExtractTextPlugin('css/[name]/' + config.worona.slug + '.styles.[contenthash].css');
 };
 
-var dllReferencePlugin = function(options) {
+var dllReferencePlugin = function(config) {
   return new webpack.DllReferencePlugin({
     context: '../..',
-    manifest: require('./' + options.env + '-' + options.entry + '-vendors-manifest.json'),
+    manifest: require('./' + config.env + '-' + config.entry + '-vendors-manifest.json'),
   });
 };
 
-var dllPlugin = function(options) {
-  var env = options.env;
-  var service = options.worona.service;
+var dllPlugin = function(config) {
   return new webpack.DllPlugin({
-    path: path.resolve('dist', service, env, 'vendors', 'vendors-manifest.json'),
-    name: 'vendors_' + service + '_worona',
-    context: path.resolve('..', '..', '..'),
+    path: path.resolve('dist', config.vendors.name, config.env, 'json', 'vendors-manifest.json'),
+    name: 'vendors_' + config.service + '_worona',
   });
 };
 
-var statsWriterPlugin = function(options) {
+var fixModuleIdAndChunkIdPlugin = function() {
+  return new FixModuleIdAndChunkIdPlugin();
+};
+
+var statsWriterPluginVendors = function(config) {
+  var env = config.env;
+  var service = config.service;
+  config.vendors[env] = config.vendors[env] || { files: [], assets: { css: [] }};
+  return new StatsWriterPlugin({
+    filename: '../worona.json',
+    fields: ['chunks'],
+    transform: function (data) {
+      data.chunks.forEach(function(chunk) {
+        chunk.files.forEach(function(file, index) {
+          var chunkName = chunk.names[index];
+          var vendorsChunk = {
+            file: 'dist/' + config.vendors.name + '/' + env + '/' + file,
+            filename: /(.+\/)?(.+)$/.exec(file)[2],
+            hash: chunk.hash,
+          };
+          config.vendors[env].main = vendorsChunk;
+          config.vendors[env].files.push(vendorsChunk);
+        });
+      });
+      return JSON.stringify(config, null, 2);
+    }
+  });
+};
+
+var statsWriterPlugin = function(config) {
   return new StatsWriterPlugin({
     filename: '../../package.json',
     fields: ['assets', 'chunks'],
     transform: function (data) {
-      var worona = options.worona;
-      var env = options.env;
-      var entry = options.entry;
-      var packageJson = options.packageJson;
+      var worona = config.worona;
+      var env = config.env;
+      var entry = config.entry;
+      var packageJson = config.packageJson;
       worona[entry] = worona[entry] || {};
       worona[entry][env] = worona[entry][env] || {};
       worona[entry][env].files = [];
@@ -109,4 +136,6 @@ module.exports = {
   dllReferencePlugin: dllReferencePlugin,
   dllPlugin: dllPlugin,
   statsWriterPlugin: statsWriterPlugin,
+  statsWriterPluginVendors: statsWriterPluginVendors,
+  fixModuleIdAndChunkIdPlugin: fixModuleIdAndChunkIdPlugin,
 };
