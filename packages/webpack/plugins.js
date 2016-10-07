@@ -4,6 +4,8 @@ var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var FixModuleIdAndChunkIdPlugin = require('fix-moduleid-and-chunkid-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var definePlugin = function(config) {
   var nodeEnv = config.env === 'dev' ? 'development' : 'production';
@@ -36,19 +38,19 @@ var occurrenceOrderPlugin = function(config) {
 
 var extractTextPlugin = function(config) {
   if (config.env === 'prod')
-    return new ExtractTextPlugin('css/[name]/' + config.worona.slug + '.styles.[contenthash].css');
+    return new ExtractTextPlugin('css/[name]/' + config.slug + '.styles.[contenthash].css');
 };
 
 var dllReferencePlugin = function(config) {
   return new webpack.DllReferencePlugin({
-    context: '../..',
-    manifest: require('./' + config.env + '-' + config.entry + '-vendors-manifest.json'),
+    context: '.',
+    manifest: require('../dist/vendors-' + config.service + '-worona/' + config.env + '/json/vendors-manifest.json'),
   });
 };
 
 var dllPlugin = function(config) {
   return new webpack.DllPlugin({
-    path: path.resolve('dist', config.vendors.name, config.env, 'json', 'vendors-manifest.json'),
+    path: path.resolve('dist', config.name, config.env, 'json', 'vendors-manifest.json'),
     name: 'vendors_' + config.service + '_worona',
   });
 };
@@ -57,24 +59,23 @@ var fixModuleIdAndChunkIdPlugin = function() {
   return new FixModuleIdAndChunkIdPlugin();
 };
 
-var statsWriterPluginVendors = function(config) {
+var statsWriterPlugin = function(config) {
   var env = config.env;
-  var service = config.service;
-  config.vendors[env] = config.vendors[env] || { files: [], assets: { css: [] }};
+  config.cdn = config.cdn || {};
+  config.cdn[env] = config.cdn[env] || { files: [], assets: { css: [] }};
   return new StatsWriterPlugin({
     filename: '../worona.json',
     fields: ['chunks'],
     transform: function (data) {
       data.chunks.forEach(function(chunk) {
         chunk.files.forEach(function(file, index) {
-          var chunkName = chunk.names[index];
           var vendorsChunk = {
-            file: 'dist/' + config.vendors.name + '/' + env + '/' + file,
+            file: 'dist/' + config.name + '/' + env + '/' + file,
             filename: /(.+\/)?(.+)$/.exec(file)[2],
             hash: chunk.hash,
           };
-          config.vendors[env].main = vendorsChunk;
-          config.vendors[env].files.push(vendorsChunk);
+          if (chunk.names[index] === 'main') config.cdn[env].main = vendorsChunk;
+          config.cdn[env].files.push(vendorsChunk);
         });
       });
       return JSON.stringify(config, null, 2);
@@ -82,49 +83,26 @@ var statsWriterPluginVendors = function(config) {
   });
 };
 
-var statsWriterPlugin = function(config) {
-  return new StatsWriterPlugin({
-    filename: '../../package.json',
-    fields: ['assets', 'chunks'],
-    transform: function (data) {
-      var worona = config.worona;
-      var env = config.env;
-      var entry = config.entry;
-      var packageJson = config.packageJson;
-      worona[entry] = worona[entry] || {};
-      worona[entry][env] = worona[entry][env] || {};
-      worona[entry][env].files = [];
-      worona[entry][env].assets = {};
-      data.assets.forEach(function(asset) {
-        var hash;
-        try {
-          hash = /\.([a-z0-9]{32})\.\w+?$/.exec(asset.name)[1];
-          type = /^(\w+)\//.exec(asset.name)[1];
-        } catch (error) {
-          throw new Error('Hash or type couldn\'t be extracted from ' + asset.name);
-        }
-        if (type === 'css') {
-          worona[entry][env].assets[type] = worona[entry][env].assets[type] || [];
-          worona[entry][env].assets[type].push(packageJson.name + '/dist/' + env + '/' + asset.name);
-        }
-        worona[entry][env].files.push({
-          file: packageJson.name + '/dist/' + env + '/' + asset.name,
-          hash: hash,
-        });
-      });
-      data.chunks.forEach(function(chunk) {
-        chunk.files.forEach(function(file, index) {
-          if (chunk.names[index] === 'main') {
-            worona[entry][env].main = packageJson.name + '/dist/' + env + '/' + file;
-          }
-        });
-      });
-      return JSON.stringify(packageJson, null, 2);
-    }
+var htmlWebpackPlugin = function(config) {
+  var vendors = require('../dist/vendors-' + config.service + '-worona/worona.json');
+  return new HtmlWebpackPlugin({
+    filename: 'html/index.html',
+    inject: false,
+    title: 'Worona Dashboard',
+    template: path.resolve('node_modules', config.name, 'html', 'index.html'),
+    vendorsFile: 'https://cdn.worona.io/packages/' + vendors.cdn[config.env].main.file,
+    appMountId: 'root',
+    window: { __worona__: { prod: (config.env === 'prod'), remote: true } },
+    minify: { preserveLineBreaks: true, collapseWhitespace: true },
   });
 };
 
-
+var copyFaviconPlugin = function(config) {
+  return new CopyWebpackPlugin([{
+    from: 'node_modules/' + config.name + '/html/favicon.png',
+    to: 'html/favicon.png'
+  }]);
+};
 
 module.exports = {
   definePlugin: definePlugin,
@@ -136,6 +114,7 @@ module.exports = {
   dllReferencePlugin: dllReferencePlugin,
   dllPlugin: dllPlugin,
   statsWriterPlugin: statsWriterPlugin,
-  statsWriterPluginVendors: statsWriterPluginVendors,
   fixModuleIdAndChunkIdPlugin: fixModuleIdAndChunkIdPlugin,
+  htmlWebpackPlugin: htmlWebpackPlugin,
+  copyFaviconPlugin: copyFaviconPlugin,
 };

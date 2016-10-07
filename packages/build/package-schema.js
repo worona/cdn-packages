@@ -39,6 +39,17 @@ const Files = new Schema({
   _id: false,
 });
 
+const Cdn = new Schema({
+  dev: {
+    type: Files,
+    required: true,
+  },
+  prod: {
+    type: Files,
+    required: true,
+  },
+});
+
 const Menu = new Schema({
   category: {
     type: String,
@@ -129,17 +140,10 @@ const Package = new Schema({
     default: 1,
   },
   dependencies: {
-    type: [{
-      type: String,
-    }],
-    required: false,
+    type: [String],
   },
-  dev: {
-    type: Files,
-    required: true,
-  },
-  prod: {
-    type: Files,
+  cdn: {
+    type: Cdn,
     required: true,
   },
 }, {

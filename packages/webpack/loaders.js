@@ -1,15 +1,23 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var babel = function(options) {
+var ignoreLoader = function(config) {
   return {
-    test: /\.jsx?$/,
-    loader: 'babel-loader',
-    exclude: /(node_modules)/,
+    test: /packages\/.+-worona\/src\/(dashboard\/)?index\.js$/,
+    loader: 'ignore-loader',
+    exclude: new RegExp(config.name),
   };
 };
 
-var css = function(options) {
-  if (options.env === 'dev') {
+var babel = function(config) {
+  return {
+    test: /\.jsx?$/,
+    loader: 'babel-loader',
+    include: new RegExp('node_modules\/' + config.name),
+  };
+};
+
+var css = function(config) {
+  if (config.env === 'dev' || config.type === 'core') {
     return {
       test: /\.css$/,
       loaders: [
@@ -17,7 +25,6 @@ var css = function(options) {
         'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
         'postcss-loader',
       ],
-      exclude: /(node_modules)/,
     };
   } else {
     return {
@@ -30,8 +37,8 @@ var css = function(options) {
   }
 };
 
-var sass = function(options) {
-  if (options.env === 'dev') {
+var sass = function(config) {
+  if (config.env === 'dev' || config.type === 'core') {
     return {
       test: /\.s[ac]ss$/,
       loaders: [
@@ -51,33 +58,34 @@ var sass = function(options) {
   }
 };
 
-var image = function(options) {
+var image = function(config) {
   return {
     test: /\.(png|jpg|gif)$/,
     loader: 'file-loader?name=images/[name].[hash].[ext]',
-    exclude: /(node_modules)/,
+    include: new RegExp('node_modules\/' + config.name),
   };
 }
 
-var font = function(options) {
+var font = function(config) {
   return {
     test: /\.(eot|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
     loader: 'file-loader?name=fonts/[name].[hash].[ext]',
   };
 }
 
-var locale = function(options) {
+var locale = function(config) {
   return {
     test: /locales\/.+\.json$/,
     loader: 'bundle-loader?name=locales/[name]',
+    include: new RegExp('node_modules\/' + config.name),
   };
 };
 
-var json = function(options) {
+var json = function(config) {
   return {
     test: /\.json$/,
     loader: 'json-loader?name=jsons/[name].[hash].[ext]',
-    exclude: /(node_modules)/,
+    include: new RegExp('node_modules\/' + config.name),
   };
 };
 
@@ -89,4 +97,5 @@ module.exports = {
   font: font,
   locale: locale,
   json: json,
+  ignoreLoader: ignoreLoader,
 };
