@@ -44,13 +44,14 @@ var extractTextPlugin = function(config) {
 var dllReferencePlugin = function(config) {
   return new webpack.DllReferencePlugin({
     context: '.',
-    manifest: require('../dist/vendors-' + config.service + '-worona/' + config.env + '/json/vendors-manifest.json'),
+    manifest: require('../dist/vendors-' + config.service + '-worona/' + config.service +
+      '/' + config.env + '/json/vendors-manifest.json'),
   });
 };
 
 var dllPlugin = function(config) {
   return new webpack.DllPlugin({
-    path: path.resolve('dist', config.name, config.env, 'json', 'vendors-manifest.json'),
+    path: path.resolve('dist', config.name, config.service, config.env, 'json', 'vendors-manifest.json'),
     name: 'vendors_' + config.service + '_worona',
   });
 };
@@ -61,10 +62,12 @@ var fixModuleIdAndChunkIdPlugin = function() {
 
 var statsWriterPlugin = function(config) {
   var env = config.env;
+  var service = config.service;
   config.cdn = config.cdn || {};
-  config.cdn[env] = config.cdn[env] || { files: [], assets: { css: [] }};
+  config.cdn[service] = config.cdn[service] || {};
+  config.cdn[service][env] = config.cdn[service][env] || { files: [], assets: { css: [] }};
   return new StatsWriterPlugin({
-    filename: '../worona.json',
+    filename: '../../worona.json',
     fields: ['chunks'],
     transform: function (data) {
       data.chunks.forEach(function(chunk) {
@@ -74,8 +77,8 @@ var statsWriterPlugin = function(config) {
             filename: /(.+\/)?(.+)$/.exec(file)[2],
             hash: chunk.hash,
           };
-          if (chunk.names[index] === 'main') config.cdn[env].main = vendorsChunk;
-          config.cdn[env].files.push(vendorsChunk);
+          if (chunk.names[index] === 'main') config.cdn[service][env].main = vendorsChunk;
+          config.cdn[service][env].files.push(vendorsChunk);
         });
       });
       return JSON.stringify(config, null, 2);
@@ -90,7 +93,7 @@ var htmlWebpackPlugin = function(config) {
     inject: false,
     title: 'Worona Dashboard',
     template: path.resolve('node_modules', config.name, 'html', 'index.html'),
-    vendorsFile: 'https://cdn.worona.io/packages/' + vendors.cdn[config.env].main.file,
+    vendorsFile: 'https://cdn.worona.io/packages/' + vendors.cdn[config.service][config.env].main.file,
     appMountId: 'root',
     window: { __worona__: { prod: (config.env === 'prod'), remote: true } },
     minify: { preserveLineBreaks: true, collapseWhitespace: true },

@@ -11,11 +11,9 @@ if (packageJson.worona.type === 'core') {
     if (stdout) console.log('WEBPACK: ', stdout);
     if (stderr) console.log('WEBPACK STDERR: ', stderr);
     if (error !== null) {
-      console.log('WEBPACK error, stoping here.');
-      console.log(error);
-      console.log('\n');
+      throw new Error(error);
     } else {
-      console.log('Building succeed.');
+      console.log('Build succeed.');
       console.log('\n');
     }
   });

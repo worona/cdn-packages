@@ -1,7 +1,15 @@
-const Schema = require('mongoose').Schema;
+var Schema = require('mongoose').Schema;
 
-const File = new Schema({
+var atLeastOneCdn = function(value) {
+  return !!value.dashboard || !!value.app;
+};
+
+var File = new Schema({
   file: {
+    type: String,
+    required: true,
+  },
+  filename: {
     type: String,
     required: true,
   },
@@ -15,7 +23,7 @@ const File = new Schema({
   _id: false,
 });
 
-const Assets = new Schema({
+var Assets = new Schema({
   css: {
     type: [String],
     required: false,
@@ -23,13 +31,13 @@ const Assets = new Schema({
   _id: false,
 });
 
-const Files = new Schema({
+var Files = new Schema({
   files: {
     type: [File],
     required: true,
   },
   main: {
-    type: String,
+    type: File,
     required: true,
   },
   assets: {
@@ -39,7 +47,7 @@ const Files = new Schema({
   _id: false,
 });
 
-const Cdn = new Schema({
+var Env = new Schema({
   dev: {
     type: Files,
     required: true,
@@ -50,7 +58,16 @@ const Cdn = new Schema({
   },
 });
 
-const Menu = new Schema({
+var Cdn = new Schema({
+  dashboard: {
+    type: Env,
+  },
+  app: {
+    type: Env,
+  },
+});
+
+var Menu = new Schema({
   category: {
     type: String,
     required: true,
@@ -63,7 +80,7 @@ const Menu = new Schema({
   },
 });
 
-const Package = new Schema({
+var Package = new Schema({
   name: {
     type: String,
     required: true,
@@ -145,6 +162,7 @@ const Package = new Schema({
   cdn: {
     type: Cdn,
     required: true,
+    validate: [atLeastOneCdn, 'You need to add files from at least one service (dashboard or app).'],
   },
 }, {
   collection: 'packages',
