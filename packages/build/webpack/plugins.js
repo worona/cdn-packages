@@ -70,10 +70,11 @@ var statsWriterPlugin = function(config) {
     filename: '../../worona.json',
     fields: ['chunks'],
     transform: function (data) {
+      console.log(env);
       data.chunks.forEach(function(chunk) {
         chunk.files.forEach(function(file, index) {
           var vendorsChunk = {
-            file: 'dist/' + config.name + '/' + env + '/' + file,
+            file: 'dist/' + config.name + '/' + service + '/' + env + '/' + file,
             filename: /(.+\/)?(.+)$/.exec(file)[2],
             hash: chunk.hash,
           };
