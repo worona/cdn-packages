@@ -67,10 +67,9 @@ var statsWriterPlugin = function(config) {
   config.cdn[service] = config.cdn[service] || {};
   config.cdn[service][env] = config.cdn[service][env] || { files: [], assets: { css: [] }};
   return new StatsWriterPlugin({
-    filename: '../../worona.json',
+    filename: 'json/worona.json',
     fields: ['chunks'],
     transform: function (data) {
-      console.log(env);
       data.chunks.forEach(function(chunk) {
         chunk.files.forEach(function(file, index) {
           var vendorsChunk = {

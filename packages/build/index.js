@@ -8,7 +8,7 @@ const start = async () => {
   const { worona, description, keywords } = require(`../node_modules/${name}/package.json`);
   const config = { ...worona, name, version, description, keywords };
   if (worona.type === 'core') {
-    await webpack({ ...config, name: `vendors-${config.service}-worona` });
+    await webpack({ ...config, name: `vendors-${config.service}-worona`, type: 'vendors' });
   }
 };
 
