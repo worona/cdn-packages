@@ -24,12 +24,12 @@ export default async ({ name, type, service }) => {
 
   clean(path.resolve('dist', name));
 
-  entries.forEach(entry => envs.forEach(async env => {
+  entries.forEach(entrie => envs.forEach(async env => {
     await spawn('./node_modules/.bin/webpack', ['--config', 'webpack.config.js', '--progress',
       '--name', name,
       '--type', type,
       '--service', service,
-      '--entry', entry,
+      '--entrie', entrie,
       '--env', env,
     ], { stdio:'inherit' });
   }));

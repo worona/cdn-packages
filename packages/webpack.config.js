@@ -5,7 +5,6 @@ var loaders = require('./build/webpack/loaders');
 
 switch (config.type) {
   case 'vendors':
-    var vendors = require('core-' + config.service + '-worona/vendors.json');
     var pluginsArr = [
       plugins.definePlugin(config),
       plugins.uglifyJsPlugin(config),
@@ -16,7 +15,7 @@ switch (config.type) {
       plugins.statsWriterPlugin(config),
     ].filter(function(plugin) { return typeof plugin !== 'undefined'; });
     module.exports = {
-      entry: { main: vendors },
+      entry: { main: require('core-' + config.service + '-worona/vendors.json') },
       output: output.vendors(config),
       plugins: pluginsArr,
     };
