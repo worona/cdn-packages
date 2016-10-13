@@ -46,7 +46,7 @@ switch (config.type) {
     module.exports = {
       entry: { main: [
         'script!systemjs/dist/system.js',
-        './node_modules/' + name + '/' + service + '/src/index.js'
+        './node_modules/' + config.name + '/' + config.service + '/src/index.js'
       ] },
       output: output.core(config),
       module: { loaders: loadersArr },

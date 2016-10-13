@@ -18,7 +18,7 @@ var packages = function(config) {
 var core = function(config) {
   return {
     path: path.resolve('dist', config.name, config.service, config.env),
-    publicPath: 'https://cdn.worona.io/packages/dist/' + config.name + '/' + config.env,
+    publicPath: 'https://cdn.worona.io/packages/dist/' + config.name + '/' + config.service + '/' + config.env,
     filename: 'js/core-' + config.service + '.[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
     hashDigestLength: 32,

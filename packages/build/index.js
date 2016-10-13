@@ -10,6 +10,7 @@ const start = async () => {
   if (worona.type === 'core') {
     await webpack({ ...config, name: `vendors-${config.service}-worona`, type: 'vendors' });
   }
+  await webpack(config);
 };
 
 process.on('unhandledRejection', (err) => {
