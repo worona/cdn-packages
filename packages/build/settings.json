@@ -1,0 +1,8 @@
+{
+  "mongoUrl": "mongodb://worona-test:worona-test@dogen.mongohq.com:10062/luisherranz-worona-dev?replicaSet=set-54510d8fd81b4a4cfc005f2e",
+  "keycdn": {
+    "url": "cdn-32e2.kxcdn.com",
+    "apiKey": "sk_prod_MDQ4MzZiNmYxYmU5YTI4MDAx",
+    "zoneId": "33414"
+  }
+}

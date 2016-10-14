@@ -17,6 +17,7 @@ export default async () => {
     message: 'Which version do you want to install?',
     default: function () { return defaultVersion; },
   }]);
+  if (!semver.valid(version)) throw new Error('Invalid version number.');
   console.log('\n');
   return { name, version };
 };

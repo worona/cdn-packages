@@ -26,7 +26,6 @@ var File = new Schema({
 var Assets = new Schema({
   css: {
     type: [String],
-    required: false,
   },
   _id: false,
 });
@@ -42,7 +41,6 @@ var Files = new Schema({
   },
   assets: {
     type: Assets,
-    required: true,
   },
   _id: false,
 });
@@ -114,7 +112,7 @@ var Package = new Schema({
   type: {
     type: String,
     required: true,
-    enum: ['vendor', 'core', 'theme', 'extension'],
+    enum: ['vendors', 'core', 'theme', 'extension'],
   },
   service: {
     type: String,

@@ -1,6 +1,8 @@
 import inquire from './inquire';
 import install from './install';
 import webpack from './webpack';
+import save from './save';
+import purge from './purge';
 
 const start = async () => {
   const { name, version } = await inquire();
@@ -8,12 +10,16 @@ const start = async () => {
   const { worona, description, keywords } = require(`../node_modules/${name}/package.json`);
   const config = { ...worona, name, version, description, keywords };
   if (worona.type === 'core') {
-    await webpack({ ...config, name: `vendors-${config.service}-worona`, type: 'vendors' });
+    const vendorsName = `vendors-${config.service}-worona`;
+    await webpack({ ...config, name: vendorsName, type: 'vendors' });
+    await save({ name: vendorsName });
   }
   await webpack(config);
+  await save({ name });
+  await purge();
 };
 
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', err => {
   console.log(err.stack);
   process.exit(1);
 });

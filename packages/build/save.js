@@ -1,34 +1,29 @@
-var config = require('./config.json');
-var current = require('../dist/current.json');
-var values = require('../dist/' + current.name + '/worona.json');
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var PackageSchema = require('./package-schema');
+import mongoose from 'mongoose';
+import { cyan } from 'colors';
+import settings from './settings.json';
+import PackageSchema from './package-schema';
 
-var PackageModel = mongoose.model('Package', PackageSchema);
-var pkg = PackageModel(values);
-var error = pkg.validateSync();
-if (error) {
-  throw new Error(error);
-} else {
-  console.log('\nValidation succeed.');
-  mongoose.connect(config.mongoUrl);
-  PackageModel.findOne({ name: values.name }, function (err, doc) {
-    if (err) {
-      console.log('\nError retriving doc: ', err);
-    } else {
-      if (doc === null) {
-        console.log('\nPackage not found. Creating new entry.');
-        doc = PackageModel(values);
-      } else {
-        console.log('\nPackage found. Updating values.');
-        Object.assign(doc, values);
-      }
-      doc.save(function(err) {
-        mongoose.connection.close()
-        if (err) console.log(err);
-        else console.log('\nPackage saved successfully on the database.');
-      });
-    }
-  });
-}
+mongoose.Promise = global.Promise;
+const PackageModel = mongoose.model('Package', PackageSchema);
+
+const log = msg => console.log(cyan(msg));
+
+export default async ({ name }) => {
+  const values = require(`../dist/${name}/worona.json`);
+  const pkg = PackageModel(values);
+  const error = await pkg.validate();
+  if (error) throw new Error(error);
+  log('\nValidation succeed.');
+  mongoose.connect(settings.mongoUrl);
+  let doc = await PackageModel.findOne({ name }).exec();
+  if (doc === null) {
+    log('Package not found. Creating new entry.');
+    doc = PackageModel(values);
+  } else {
+    log('Package found. Updating values.');
+    doc = { ...doc, values };
+  }
+  await doc.save();
+  mongoose.connection.close();
+  log('Package saved successfully on the database.\n');
+};

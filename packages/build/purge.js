@@ -1,13 +1,19 @@
-var KeyCDN = require('keycdn');
-var config = require('./config.json');
-var keycdn = new KeyCDN(config.keycdn.apiKey);
+import KeyCDN from 'keycdn';
+import { yellow } from 'colors';
+import settings from './settings.json';
+const keycdn = new KeyCDN(settings.keycdn.apiKey);
 
-console.log('\nPurging the cdn...');
+const log = msg => console.log(yellow(msg));
 
-keycdn.get('zones/purge/' + config.keycdn.zoneId + '.json', function(err, res) {
-  if (err) {
-      console.log('\nError purging the cdn: ', err);
-  } else {
-      console.log('\nPurging succeed!\n\n');
-  }
+const purge = zoneId => new Promise((resolve, reject) => {
+  keycdn.get('zones/purge/' + zoneId + '.json', function(err, res) {
+    if (err) reject('Error purging the cdn: ');
+    else resolve(true);
+  });
 });
+
+export default async () => {
+  log('\nPurging the cdn...');
+  await purge(settings.keycdn.zoneId);
+  log('Purging succeed!\n');
+};
