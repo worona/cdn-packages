@@ -1,14 +1,11 @@
 var path = require('path');
 
 var packages = function(config) {
-  var env = config.env;
-  var name = config.name;
-  var worona = config.worona;
   return {
-    path: path.resolve('dist', env),
-    publicPath: 'https://cdn.worona.io/packages/' + name + '/dist/' + env + '/',
-    filename: 'js/[name]-' + worona.slug + '.' + worona.entrie + '.' + worona.type + '.[chunkhash].js',
-    library: worona.slug + '_' + worona.entrie + '_' + worona.type,
+    path: path.resolve('dist', config.name, config.entrie, config.env),
+    publicPath: 'https://cdn.worona.io/packages/dist/' + config.name + '/' + config.entrie + '/' + config.env,
+    filename: 'js/' + config.name + '.[chunkhash].js',
+    library: config.name.replace('-', '_'),
     libraryTarget: 'commonjs2',
     hashDigestLength: 32,
     chunkFilename: '[name].[chunkhash].js',

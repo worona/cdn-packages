@@ -16,7 +16,8 @@ export default async (config) => {
   const { name, type, service } = config;
   const envs = ['dev', 'prod'];
   const entries = (type === 'vendors') ? [service] : ['dashboard', 'app'].filter(entrie =>
-    entryExists(path.resolve('node_modules', name, entrie, 'src', 'index.js')));
+    entryExists(path.resolve('node_modules', name, 'src', entrie, 'index.js')));
+  if (entries.length === 0) throw new Error('No entry found. Please check the src folder.');
   rimraf.sync(path.resolve('dist', name));
   const files = {};
   for (var i = 0; i < entries.length; i++) {

@@ -38,7 +38,7 @@ var occurrenceOrderPlugin = function(config) {
 
 var extractTextPlugin = function(config) {
   if (config.env === 'prod')
-    return new ExtractTextPlugin('css/[name]/' + config.slug + '.styles.[contenthash].css');
+    return new ExtractTextPlugin('css/' + config.name + '.[contenthash].css');
 };
 
 var dllReferencePlugin = function(config) {
@@ -60,21 +60,46 @@ var fixModuleIdAndChunkIdPlugin = function() {
   return new FixModuleIdAndChunkIdPlugin();
 };
 
+var contextReplacementPlugin = function() {
+  new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|es/);
+}
+
 var statsWriterPlugin = function(config) {
   var output = { files: [] };
   return new StatsWriterPlugin({
     filename: 'files.json',
-    fields: ['chunks'],
+    fields: ['assets', 'chunks'],
     transform: function (data) {
+      data.assets.forEach(function(asset) {
+        if (asset.name !== 'html/index.html') {
+          var hash;
+          try {
+            hash = /\.([a-z0-9]{32})\.\w+?$/.exec(asset.name)[1];
+            type = /^(\w+)\//.exec(asset.name)[1];
+          } catch (error) {
+            throw new Error('Hash or type couldn\'t be extracted from ' + asset.name);
+          }
+          var filepath = 'dist/' + config.name + '/' + config.entrie + '/' + config.env + '/' + asset.name;
+          if (type === 'css') {
+            output.assets = output.assets || {};
+            output.assets[type] = output.assets[type] || [];
+            output.assets[type].push(filepath);
+          }
+          output.files.push({
+            file: filepath,
+            filename: /(.+\/)?(.+)$/.exec(asset.name)[2],
+            hash: hash,
+          });
+        }
+      });
       data.chunks.forEach(function(chunk) {
         chunk.files.forEach(function(file, index) {
-          var vendorsChunk = {
-            file: 'dist/' + config.name + '/' + config.entrie + '/' + config.env + '/' + file,
-            filename: /(.+\/)?(.+)$/.exec(file)[2],
-            hash: chunk.hash,
-          };
-          if (chunk.names[index] === 'main') output.main = vendorsChunk;
-          output.files.push(vendorsChunk);
+          if (chunk.names[index] === 'main')
+            output.main = {
+              file: 'dist/' + config.name + '/' + config.entrie + '/' + config.env + '/' + file,
+              filename: /(.+\/)?(.+)$/.exec(file)[2],
+              hash: chunk.hash,
+            };
         });
       });
       return JSON.stringify(output, null, 2);
@@ -117,4 +142,5 @@ module.exports = {
   fixModuleIdAndChunkIdPlugin: fixModuleIdAndChunkIdPlugin,
   htmlWebpackPlugin: htmlWebpackPlugin,
   copyFaviconPlugin: copyFaviconPlugin,
+  contextReplacementPlugin: contextReplacementPlugin,
 };

@@ -46,7 +46,7 @@ switch (config.type) {
     module.exports = {
       entry: { main: [
         'script!systemjs/dist/system.js',
-        './node_modules/' + config.name + '/' + config.entrie + '/src/index.js'
+        './node_modules/' + config.name + '/src/' + config.entrie + '/index.js'
       ] },
       output: output.core(config),
       module: { loaders: loadersArr },
@@ -56,7 +56,7 @@ switch (config.type) {
     };
     break;
 
-  default:
+  default: // Extensions and Themes.
     var pluginsArr = [
       plugins.definePlugin(config),
       plugins.uglifyJsPlugin(config),
@@ -64,12 +64,11 @@ switch (config.type) {
       plugins.occurrenceOrderPlugin(config),
       plugins.dllReferencePlugin(config),
       plugins.lodashModuleReplacementPlugin(config),
-      plugins.htmlWebpackPlugin(config),
+      plugins.extractTextPlugin(config),
       plugins.statsWriterPlugin(config),
-      plugins.copyFaviconPlugin(config),
+      plugins.contextReplacementPlugin(),
     ].filter(function(plugin) { return typeof plugin !== 'undefined'; });
     var loadersArr = [
-      loaders.ignoreLoader(config),
       loaders.babel(config),
       loaders.css(config),
       loaders.sass(config),
@@ -79,14 +78,12 @@ switch (config.type) {
       loaders.json(config),
     ].filter(function(loader) { return typeof loader !== 'undefined'; });
     module.exports = {
-      entry: { main: [
-        'script!systemjs/dist/system.js',
-        './node_modules/' + config.name + '/' + config.entrie + '/src/index.js'
-      ] },
-      output: output.core(config),
+      entry: { main: './node_modules/' + config.name + '/src/' + config.entrie + '/index.js' },
+      output: output.packages(config),
       module: { loaders: loadersArr },
       resolve: { extensions: ['', '.js', '.jsx'] },
       postcss: function() { return [require('postcss-cssnext')()]; },
+      stats: { children: false },
       plugins: pluginsArr,
     };
     break;
