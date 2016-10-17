@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { cyan } from 'colors';
-import settings from './settings.json';
+import config from './config.json';
 import PackageSchema from './package-schema';
 
 mongoose.Promise = global.Promise;
@@ -14,7 +14,7 @@ export default async ({ name }) => {
   const error = await pkg.validate();
   if (error) throw new Error(error);
   log('\nValidation succeed.');
-  mongoose.connect(settings.mongoUrl);
+  mongoose.connect(config.mongoUrl);
   let doc = await PackageModel.findOne({ name }).exec();
   if (doc === null) {
     log('Package not found. Creating new entry.');

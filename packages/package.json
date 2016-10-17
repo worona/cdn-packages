@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/worona/cdn-packages#readme",
   "dependencies": {
-    "accounts-dashboard-extension-worona": "1.1.10",
+    "accounts-dashboard-extension-worona": "1.2.0",
     "bulma-dashboard-theme-worona": "1.2.0",
     "connection-dashboard-extension-worona": "1.1.4",
     "core-app-worona": "1.1.0",

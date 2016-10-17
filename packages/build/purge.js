@@ -1,7 +1,7 @@
 import KeyCDN from 'keycdn';
 import { yellow } from 'colors';
-import settings from './settings.json';
-const keycdn = new KeyCDN(settings.keycdn.apiKey);
+import config from './config.json';
+const keycdn = new KeyCDN(config.keycdn.apiKey);
 
 const log = msg => console.log(yellow(msg));
 
@@ -14,6 +14,6 @@ const purge = zoneId => new Promise((resolve, reject) => {
 
 export default async () => {
   log('\nPurging the cdn...');
-  await purge(settings.keycdn.zoneId);
+  await purge(config.keycdn.zoneId);
   log('Purging succeed!\n');
 };
