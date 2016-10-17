@@ -54,6 +54,7 @@ var Env = new Schema({
     type: Files,
     required: true,
   },
+  _id: false,
 });
 
 var Cdn = new Schema({
@@ -63,6 +64,7 @@ var Cdn = new Schema({
   app: {
     type: Env,
   },
+  _id: false,
 });
 
 var Menu = new Schema({
@@ -76,6 +78,7 @@ var Menu = new Schema({
     min: 1,
     max: 1000,
   },
+  _id: false,
 });
 
 var Package = new Schema({

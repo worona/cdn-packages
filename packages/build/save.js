@@ -19,11 +19,15 @@ export default async ({ name }) => {
   if (doc === null) {
     log('Package not found. Creating new entry.');
     doc = PackageModel(values);
+    await doc.save();
   } else {
-    log('Package found. Updating values.');
-    doc = { ...doc, values };
+    log('Package found. Overwriting values.');
+    await PackageModel
+      .where({ _id: doc._id })
+      .setOptions({ overwrite: true })
+      .update(values)
+      .exec();
   }
-  await doc.save();
   mongoose.connection.close();
   log('Package saved successfully on the database.\n');
 };
