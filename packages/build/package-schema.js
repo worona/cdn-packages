@@ -157,9 +157,6 @@ var Package = new Schema({
     required: true,
     default: 1,
   },
-  dependencies: {
-    type: [String],
-  },
   cdn: {
     type: Cdn,
     required: true,
