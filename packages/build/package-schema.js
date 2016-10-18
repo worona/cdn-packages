@@ -1,10 +1,8 @@
-var Schema = require('mongoose').Schema;
+import { Schema } from 'mongoose';
 
-var atLeastOneCdn = function(value) {
-  return !!value.dashboard || !!value.app;
-};
+const atLeastOneCdn = value => !!value.dashboard || !!value.app;
 
-var File = new Schema({
+const File = new Schema({
   file: {
     type: String,
     required: true,
@@ -23,14 +21,14 @@ var File = new Schema({
   _id: false,
 });
 
-var Assets = new Schema({
+const Assets = new Schema({
   css: {
     type: [String],
   },
   _id: false,
 });
 
-var Files = new Schema({
+const Files = new Schema({
   files: {
     type: [File],
     required: true,
@@ -45,7 +43,7 @@ var Files = new Schema({
   _id: false,
 });
 
-var Env = new Schema({
+const Env = new Schema({
   dev: {
     type: Files,
     required: true,
@@ -57,7 +55,7 @@ var Env = new Schema({
   _id: false,
 });
 
-var Cdn = new Schema({
+const Cdn = new Schema({
   dashboard: {
     type: Env,
   },
@@ -67,7 +65,7 @@ var Cdn = new Schema({
   _id: false,
 });
 
-var Menu = new Schema({
+const Menu = new Schema({
   category: {
     type: String,
     required: true,
@@ -81,7 +79,7 @@ var Menu = new Schema({
   _id: false,
 });
 
-var Package = new Schema({
+const Package = new Schema({
   name: {
     type: String,
     required: true,
@@ -167,4 +165,4 @@ var Package = new Schema({
   timestamps: true,
 });
 
-module.exports = Package;
+export default Package;

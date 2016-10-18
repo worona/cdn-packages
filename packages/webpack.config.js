@@ -1,3 +1,4 @@
+/* eslint-disable */
 var config = require('yargs').argv;
 var plugins = require('./webpack/plugins');
 var output = require('./webpack/output');

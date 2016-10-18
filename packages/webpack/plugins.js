@@ -1,3 +1,4 @@
+/* eslint-disable */
 var webpack = require('webpack');
 var path = require('path');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');

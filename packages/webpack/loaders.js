@@ -1,3 +1,4 @@
+/* eslint-disable */
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var ignoreLoader = function(config) {

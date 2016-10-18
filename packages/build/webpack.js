@@ -3,9 +3,9 @@ import path from 'path';
 import fs from 'fs';
 import { spawn } from 'child-process-promise';
 
-const entryExists = path => {
+const entryExists = (file) => {
   try {
-    fs.accessSync(path, fs.F_OK);
+    fs.accessSync(file, fs.F_OK);
     return true;
   } catch (error) {
     return false;
@@ -20,8 +20,8 @@ export default async (config) => {
   if (entries.length === 0) throw new Error('No entry found. Please check the src folder.');
   rimraf.sync(path.resolve('dist', name));
   const files = {};
-  for (var i = 0; i < entries.length; i++) {
-    for (var j = 0; j < envs.length; j++) {
+  for (let i = 0; i < entries.length; i += 1) {
+    for (let j = 0; j < envs.length; j += 1) {
       const entrie = entries[i];
       const env = envs[j];
       await spawn('./node_modules/.bin/webpack', ['--config', 'webpack.config.js', '--progress',
@@ -29,7 +29,7 @@ export default async (config) => {
         '--type', type,
         '--entrie', entrie,
         '--env', env,
-      ], { stdio:'inherit' });
+      ], { stdio: 'inherit' });
       files[entrie] = files[entrie] || {};
       files[entrie][env] = require(`../dist/${name}/${entrie}/${env}/files.json`);
       rimraf.sync(`dist/${name}/${entrie}/${env}/files.json`);

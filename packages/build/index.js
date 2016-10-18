@@ -19,7 +19,7 @@ const start = async () => {
   await purge();
 };
 
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   console.log(err.stack);
   process.exit(1);
 });

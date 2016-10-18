@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 export default (req, res) => {
   const service = req.params.service;
   const packages = req.db.collection('packages');
   packages.find({
-    service: service,
+    service,
     core: true,
     type: { $in: ['extension', 'theme'] },
   }, {
@@ -15,13 +16,13 @@ export default (req, res) => {
     },
   }).toArray((error, docs) => {
     if (error) throw new Error('Error retrieving docs from collection packages');
-    res.json(docs.map(doc => {
+    res.json(docs.map((doc) => {
       const { cdn, ...rest } = doc;
       return {
         ...rest,
         main: doc.cdn[service].prod.main.file,
         assets: doc.cdn[service].prod.assets,
-      }
+      };
     }));
   });
 };
