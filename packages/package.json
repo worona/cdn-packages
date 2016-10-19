@@ -4,11 +4,8 @@
   "description": "Install worona packages and update the database",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "update-packages": "npm-check-updates -u",
-    "webpack": "webpack --config webpack.config.js --progress",
-    "start": "babel-node build/index.js",
-    "build": "node build/inquire.js && node build/install.js && node build/vendors.js && webpack --config webpack.config.js --progress && node build/save.js && node build/purge.js && node build/finish.js"
+    "update": "babel-node build/update.js",
+    "update:all": "babel-node build/update.js --all"
   },
   "repository": {
     "type": "git",
@@ -58,6 +55,7 @@
     "lodash-webpack-plugin": "^0.10.1",
     "mongoose": "^4.4.20",
     "node-sass": "^3.10.1",
+    "npm-registry": "^0.1.13",
     "postcss": "^5.2.4",
     "postcss-cssnext": "^2.8.0",
     "postcss-loader": "^0.13.0",
