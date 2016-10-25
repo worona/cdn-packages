@@ -8,14 +8,14 @@ const getPackageVersion = async (name) => {
   return res.body['dist-tags'].latest;
 };
 
-export default async () => {
+export default async ({ force }) => {
   const localPackages = require('../package.json').dependencies;
 
   const outdatedPackages = [];
   for (const name in localPackages) {
     const localVersion = localPackages[name];
     const remoteVersion = await getPackageVersion(name);
-    if (semver.gt(remoteVersion, localVersion)) {
+    if (semver.gt(remoteVersion, localVersion) || force) {
       outdatedPackages.push({ name, version: remoteVersion });
     } else {
       console.log(`\nPackage '${name}' is already up to date: ${localVersion}.`);
