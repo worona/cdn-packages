@@ -7,7 +7,7 @@ import save from './save';
 import purge from './purge';
 
 const update = async ({ one }) => {
-  const packages = one ? [await inquire()] : await allPackages();
+  const packages = one ? [await inquire()] : await allPackages({ force: argv.force });
   for (let i = 0; i < packages.length; i += 1) {
     const { name, version } = packages[i];
     console.log(`\nUpdating package ${name} to ${version}. Please wait...\n`);

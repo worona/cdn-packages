@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "update": "babel-node build/update.js",
-    "update:one": "babel-node build/update.js --one"
+    "update:one": "babel-node build/update.js --one",
+    "update:force": "babel-node build/update.js --force"
   },
   "repository": {
     "type": "git",
