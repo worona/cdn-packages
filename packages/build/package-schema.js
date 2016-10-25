@@ -1,7 +1,13 @@
-const Schema = require('mongoose').Schema;
+import { Schema } from 'mongoose';
+
+const atLeastOneCdn = value => !!value.dashboard || !!value.app;
 
 const File = new Schema({
   file: {
+    type: String,
+    required: true,
+  },
+  filename: {
     type: String,
     required: true,
   },
@@ -18,7 +24,6 @@ const File = new Schema({
 const Assets = new Schema({
   css: {
     type: [String],
-    required: false,
   },
   _id: false,
 });
@@ -29,12 +34,33 @@ const Files = new Schema({
     required: true,
   },
   main: {
-    type: String,
+    type: File,
     required: true,
   },
   assets: {
     type: Assets,
+  },
+  _id: false,
+});
+
+const Env = new Schema({
+  dev: {
+    type: Files,
     required: true,
+  },
+  prod: {
+    type: Files,
+    required: true,
+  },
+  _id: false,
+});
+
+const Cdn = new Schema({
+  dashboard: {
+    type: Env,
+  },
+  app: {
+    type: Env,
   },
   _id: false,
 });
@@ -50,6 +76,7 @@ const Menu = new Schema({
     min: 1,
     max: 1000,
   },
+  _id: false,
 });
 
 const Package = new Schema({
@@ -65,6 +92,9 @@ const Package = new Schema({
   description: {
     type: String,
     required: true,
+  },
+  keywords: {
+    type: [String],
   },
   niceName: {
     type: String,
@@ -83,7 +113,7 @@ const Package = new Schema({
   type: {
     type: String,
     required: true,
-    enum: ['vendor', 'core', 'theme', 'extension'],
+    enum: ['vendors', 'core', 'theme', 'extension'],
   },
   service: {
     type: String,
@@ -125,23 +155,14 @@ const Package = new Schema({
     required: true,
     default: 1,
   },
-  dependencies: {
-    type: [{
-      type: String,
-    }],
-    required: false,
-  },
-  dev: {
-    type: Files,
+  cdn: {
+    type: Cdn,
     required: true,
-  },
-  prod: {
-    type: Files,
-    required: true,
+    validate: [atLeastOneCdn, 'You need to add files from at least one service (dashboard or app).'],
   },
 }, {
   collection: 'packages',
   timestamps: true,
 });
 
-module.exports = Package;
+export default Package;
