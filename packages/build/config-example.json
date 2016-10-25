@@ -1,0 +1,8 @@
+{
+  "mongoUrl": "mongodb://user:pass@mongo_url_and_database",
+  "keycdn": {
+    "url": "xxxxxxxx.kxcdn.com",
+    "apiKey": "xxxxxxxx",
+    "zoneId": "12314567"
+  }
+}
