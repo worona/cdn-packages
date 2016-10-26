@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import semver from 'semver';
-import packageJson from '../package.json';
+import packages from '../packages.json';
 
 export default async () => {
   console.log('\n');
@@ -9,7 +9,7 @@ export default async () => {
     name: 'name',
     message: 'Which package do you want to install?',
   }]);
-  const previousVersion = packageJson.dependencies[name];
+  const previousVersion = packages[name];
   const defaultVersion = previousVersion ? semver.inc(previousVersion, 'patch') : '1.0.0';
   const { version } = await inquirer.prompt([{
     type: 'input',

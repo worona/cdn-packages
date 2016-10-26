@@ -9,7 +9,7 @@ const getPackageVersion = async (name) => {
 };
 
 export default async ({ force }) => {
-  const localPackages = require('../package.json').dependencies;
+  const localPackages = require('../packages.json');
 
   const outdatedPackages = [];
   for (const name in localPackages) {
