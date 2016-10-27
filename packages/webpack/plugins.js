@@ -118,7 +118,10 @@ var htmlWebpackPlugin = function(config) {
     template: path.resolve('node_modules', config.name, 'html', 'index.html'),
     vendorsFile: 'https://cdn.worona.io/packages/' + vendors,
     appMountId: 'root',
-    window: { __worona__: { prod: (config.env === 'prod'), remote: true } },
+    window: {
+      publicPath: 'https://cdn.worona.io/',
+      __worona__: { prod: (config.env === 'prod'), remote: true },
+    },
     minify: { preserveLineBreaks: true, collapseWhitespace: true },
   });
 };
