@@ -1,5 +1,6 @@
 {
   "name": "worona-cdn",
+  "private": true,
   "version": "1.0.0",
   "description": "Worona CDN",
   "scripts": {},

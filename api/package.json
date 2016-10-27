@@ -1,5 +1,6 @@
 {
   "name": "worona-cdn-api",
+  "private": true,
   "version": "1.0.0",
   "description": "Worona Express Server for settings API",
   "main": "src/server.js",
