@@ -16,13 +16,13 @@ module.exports = {
     loaders: [
       {
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: { cacheDirectory: true },
         test: /\.js$/,
       },
       {
         exclude: /node_modules/,
-        loader: 'json',
+        loader: 'json-loader',
         test: /\.json$/,
       },
     ],
