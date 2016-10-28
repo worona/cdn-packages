@@ -1,5 +1,6 @@
 {
   "name": "worona-cdn-api",
+  "private": true,
   "version": "1.0.0",
   "description": "Worona Express Server for settings API",
   "main": "src/server.js",
@@ -26,6 +27,7 @@
   },
   "homepage": "https://github.com/worona/worona-cdn#readme",
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "babel-core": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-0": "^6.16.0",
