@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import express from 'express';
 import mongodb from 'express-mongo-db';
 import config from './config.json';
