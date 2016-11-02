@@ -9,5 +9,5 @@ export default require('react-s3-uploader/s3router')({
   // signatureVersion: 'v4', // optional (use for some amazon regions: frankfurt and others)
   headers: { 'Access-Control-Allow-Origin': '*' }, // optional
   ACL: 'private', // this is default,
-  // getFileKeyDir: () => 'some_folder/',
+  getFileKeyDir: req => `sites/${req.query.siteId}/${req.query.imgType}/`,
 });
