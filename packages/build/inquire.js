@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import semver from 'semver';
-import packages from '../packages.json';
+import { getPackageVersion } from './utils';
 
 export default async () => {
   console.log('\n');
@@ -9,13 +9,12 @@ export default async () => {
     name: 'name',
     message: 'Which package do you want to install?',
   }]);
-  const previousVersion = packages[name];
-  const defaultVersion = previousVersion ? semver.inc(previousVersion, 'patch') : '1.0.0';
+  const latestVersion = await getPackageVersion(name);
   const { version } = await inquirer.prompt([{
     type: 'input',
     name: 'version',
     message: 'Which version do you want to install?',
-    default() { return defaultVersion; },
+    default() { return latestVersion; },
   }]);
   if (!semver.valid(version)) throw new Error('Invalid version number.');
   console.log('\n');

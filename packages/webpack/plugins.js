@@ -39,14 +39,13 @@ var occurrenceOrderPlugin = function(config) {
 
 var extractTextPlugin = function(config) {
   if (config.env === 'prod')
-    return new ExtractTextPlugin('css/' + config.name + '.[contenthash].css');
+    return new ExtractTextPlugin(config.name + '/' + config.entrie + '/' + config.env + '/css/' + config.name + '.[contenthash].css');
 };
 
 var dllReferencePlugin = function(config) {
   return new webpack.DllReferencePlugin({
     context: '.',
-    manifest: require('../dist/vendors-' + config.entrie + '-worona/' + config.entrie +
-      '/' + config.env + '/json/manifest.json'),
+    manifest: require('../dist/vendors-' + config.entrie + '-worona/' + config.entrie + '/' + config.env + '/json/manifest.json'),
   });
 };
 
@@ -68,19 +67,15 @@ var contextReplacementPlugin = function() {
 var statsWriterPlugin = function(config) {
   var output = { files: [] };
   return new StatsWriterPlugin({
-    filename: 'files.json',
+    filename: config.name + '/' + config.entrie + '/' + config.env + '/files.json',
     fields: ['assets', 'chunks'],
     transform: function (data) {
       data.assets.forEach(function(asset) {
-        if (asset.name !== 'html/index.html') {
-          var hash;
-          try {
-            hash = /\.([a-z0-9]{32})\.\w+?$/.exec(asset.name)[1];
-            type = /^(\w+)\//.exec(asset.name)[1];
-          } catch (error) {
-            throw new Error('Hash or type couldn\'t be extracted from ' + asset.name);
-          }
-          var filepath = 'dist/' + config.name + '/' + config.entrie + '/' + config.env + '/' + asset.name;
+        if (!/html\/index\.html/.test(asset.name)) {
+          var hash = /\.([a-z0-9]{32})\.\w+?$/.exec(asset.name)[1];
+          var type = /.+\/(\w+)\//.exec(asset.name)[1];
+          var filename = /(.+\/)?(.+)$/.exec(asset.name)[2];
+          var filepath = 'dist/' + asset.name;
           if (type === 'css') {
             output.assets = output.assets || {};
             output.assets[type] = output.assets[type] || [];
@@ -88,7 +83,7 @@ var statsWriterPlugin = function(config) {
           }
           output.files.push({
             file: filepath,
-            filename: /(.+\/)?(.+)$/.exec(asset.name)[2],
+            filename: filename,
             hash: hash,
           });
         }
@@ -97,7 +92,7 @@ var statsWriterPlugin = function(config) {
         chunk.files.forEach(function(file, index) {
           if (chunk.names[index] === 'main')
             output.main = {
-              file: 'dist/' + config.name + '/' + config.entrie + '/' + config.env + '/' + file,
+              file: 'dist/' + file,
               filename: /(.+\/)?(.+)$/.exec(file)[2],
               hash: chunk.hash,
             };
@@ -112,13 +107,16 @@ var htmlWebpackPlugin = function(config) {
   var worona = require('../dist/vendors-' + config.entrie + '-worona/worona.json')
   var vendors = worona.cdn[config.entrie][config.env].main.file;
   return new HtmlWebpackPlugin({
-    filename: 'html/index.html',
+    filename: config.name + '/' + config.entrie + '/' + config.env + '/html/index.html',
     inject: false,
     title: 'Worona Dashboard',
     template: path.resolve('node_modules', config.name, 'html', 'index.html'),
     vendorsFile: 'https://cdn.worona.io/packages/' + vendors,
     appMountId: 'root',
-    window: { __worona__: { prod: (config.env === 'prod'), remote: true } },
+    window: {
+      publicPath: 'https://cdn.worona.io/packages/dist/',
+      __worona__: { prod: (config.env === 'prod'), remote: true },
+    },
     minify: { preserveLineBreaks: true, collapseWhitespace: true },
   });
 };
@@ -126,7 +124,7 @@ var htmlWebpackPlugin = function(config) {
 var copyFaviconPlugin = function(config) {
   return new CopyWebpackPlugin([{
     from: 'node_modules/' + config.name + '/html/favicon.png',
-    to: 'html/favicon.png'
+    to: config.name + '/' + config.entrie + '/' + config.env + '/html/favicon.png'
   }]);
 };
 

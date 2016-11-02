@@ -1,12 +1,7 @@
 /* eslint-disable no-console, global-require, import/no-dynamic-require, guard-for-in,
   no-restricted-syntax */
-import request from 'superagent';
 import semver from 'semver';
-
-const getPackageVersion = async (name) => {
-  const res = await request(`https://registry.npmjs.org/${name}`);
-  return res.body['dist-tags'].latest;
-};
+import { getPackageVersion } from './utils';
 
 export default async ({ force }) => {
   const localPackages = require('../packages.json');
