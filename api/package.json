@@ -41,6 +41,7 @@
     "babel-polyfill": "^6.16.0",
     "express": "^4.13.4",
     "express-mongo-db": "^2.0.3",
-    "mongodb": "^2.1.21"
+    "mongodb": "^2.1.21",
+    "react-s3-uploader": "^3.3.0"
   }
 }
