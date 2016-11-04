@@ -23,8 +23,7 @@ var lodashModuleReplacementPlugin = function() {
 };
 
 var uglifyJsPlugin = function(config) {
-  if (config.env === 'prod')
-    return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
+  return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
 };
 
 var dedupePlugin = function(config) {
