@@ -115,8 +115,8 @@ const Package = new Schema({
     required: true,
     enum: ['vendors', 'core', 'theme', 'extension'],
   },
-  service: {
-    type: String,
+  services: {
+    type: [String],
     required: true,
     enum: ['dashboard', 'app', 'amp', 'fbia'],
   },

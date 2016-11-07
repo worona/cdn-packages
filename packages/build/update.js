@@ -15,7 +15,7 @@ const update = async ({ one }) => {
     const { worona, description, keywords } = require(`../node_modules/${name}/package.json`);
     const config = { ...worona, name, version, description, keywords };
     if (worona.type === 'core') {
-      const vendorsName = `vendors-${config.service}-worona`;
+      const vendorsName = `vendors-${config.services[0]}-worona`;
       await webpack({ ...config, name: vendorsName, type: 'vendors' });
       await save({ name: vendorsName });
     }

@@ -62,7 +62,7 @@ var sass = function(config) {
 var image = function(config) {
   return {
     test: /\.(png|jpg|gif)$/,
-    loader: 'file-loader?name=' + config.name + '/' + config.entrie + '/' + config.env + '/images/[name].[hash].[ext]',
+    loader: 'file-loader?name=' + config.name + '/' + config.service + '/' + config.env + '/images/[name].[hash].[ext]',
     include: new RegExp('node_modules\/' + config.name),
   };
 }
@@ -70,14 +70,14 @@ var image = function(config) {
 var font = function(config) {
   return {
     test: /\.(eot|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'file-loader?name=' + config.name + '/' + config.entrie + '/' + config.env + '/fonts/[name].[hash].[ext]',
+    loader: 'file-loader?name=' + config.name + '/' + config.service + '/' + config.env + '/fonts/[name].[hash].[ext]',
   };
 }
 
 var locale = function(config) {
   return {
     test: /locales\/.+\.json$/,
-    loader: 'bundle-loader?name=' + config.name + '/' + config.entrie + '/' + config.env + '/locales/[name]',
+    loader: 'bundle-loader?name=' + config.name + '/' + config.service + '/' + config.env + '/locales/[name]',
     include: new RegExp('node_modules\/' + config.name),
   };
 };
@@ -85,7 +85,7 @@ var locale = function(config) {
 var json = function(config) {
   return {
     test: /\.json$/,
-    loader: 'json-loader?name=' + config.name + '/' + config.entrie + '/' + config.env + '/jsons/[name].[hash].[ext]',
+    loader: 'json-loader?name=' + config.name + '/' + config.service + '/' + config.env + '/jsons/[name].[hash].[ext]',
     include: new RegExp('node_modules\/' + config.name),
   };
 };
