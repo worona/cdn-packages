@@ -23,7 +23,8 @@ var lodashModuleReplacementPlugin = function() {
 };
 
 var uglifyJsPlugin = function(config) {
-  return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
+  if (config.env === 'prod' || config.name === 'bulma-dashboard-theme-worona')
+    return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
 };
 
 var dedupePlugin = function(config) {
