@@ -6,8 +6,8 @@ import webpack from './webpack';
 import save from './save';
 import purge from './purge';
 
-const update = async ({ one }) => {
-  const packages = one ? [await inquire()] : await allPackages({ force: argv.force });
+const update = async ({ add }) => {
+  const packages = add ? [await inquire()] : await allPackages({ force: argv.force });
   for (let i = 0; i < packages.length; i += 1) {
     const { name, version } = packages[i];
     console.log(`\nUpdating package ${name} to ${version}. Please wait...\n`);
@@ -31,6 +31,6 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-update({ one: argv.one });
+update({ add: argv.add });
 
 export default update;

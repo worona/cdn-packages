@@ -69,7 +69,7 @@ const Menu = new Schema({
   category: {
     type: String,
     required: true,
-    enum: ['General', 'Appearance', 'Extensions', 'Publish'],
+    enum: ['General', 'Themes', 'Extensions', 'Publish'],
   },
   order: {
     type: Number,
