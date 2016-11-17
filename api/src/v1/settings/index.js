@@ -10,5 +10,5 @@ export default express.Router()
   .get('/', (req, res) => res.send('Worona CDN working.'))
   .get('/core/:service/:env', async(core))
   .get('/site/:siteId/:service/:env/:type', async(site))
-  .get('/package-development/:service', async(development))
+  .get('/package-development/:service/:env', async(development))
 ;
