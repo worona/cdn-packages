@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "update": "babel-node build/update.js",
-    "install": "babel-node build/update.js --add",
+    "update:one": "babel-node build/update.js --add",
     "update:force": "babel-node build/update.js --force"
   },
   "repository": {
