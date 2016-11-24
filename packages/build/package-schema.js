@@ -66,6 +66,11 @@ const Cdn = new Schema({
 });
 
 const Menu = new Schema({
+  services: {
+    type: [String],
+    required: true,
+    enum: ['app', 'amp', 'fbia'],
+  },
   category: {
     type: String,
     required: true,
