@@ -23,7 +23,7 @@ var lodashModuleReplacementPlugin = function() {
 };
 
 var uglifyJsPlugin = function(config) {
-  if (config.env === 'prod')
+  if (config.env === 'prod' || config.name === 'bulma-dashboard-theme-worona' || config.name === 'publish-native-app-extension-worona')
     return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
 };
 
@@ -39,20 +39,20 @@ var occurrenceOrderPlugin = function(config) {
 
 var extractTextPlugin = function(config) {
   if (config.env === 'prod')
-    return new ExtractTextPlugin(config.name + '/' + config.entrie + '/' + config.env + '/css/' + config.name + '.[contenthash].css');
+    return new ExtractTextPlugin(config.name + '/' + config.service + '/' + config.env + '/css/' + config.name + '.[contenthash].css');
 };
 
 var dllReferencePlugin = function(config) {
   return new webpack.DllReferencePlugin({
     context: '.',
-    manifest: require('../dist/vendors-' + config.entrie + '-worona/' + config.entrie + '/' + config.env + '/json/manifest.json'),
+    manifest: require('../dist/vendors-' + config.service + '-worona/' + config.service + '/' + config.env + '/json/manifest.json'),
   });
 };
 
 var dllPlugin = function(config) {
   return new webpack.DllPlugin({
-    path: path.resolve('dist', config.name, config.entrie, config.env, 'json', 'manifest.json'),
-    name: 'vendors_' + config.entrie + '_worona',
+    path: path.resolve('dist', config.name, config.service, config.env, 'json', 'manifest.json'),
+    name: 'vendors_' + config.service + '_worona',
   });
 };
 
@@ -67,7 +67,7 @@ var contextReplacementPlugin = function() {
 var statsWriterPlugin = function(config) {
   var output = { files: [] };
   return new StatsWriterPlugin({
-    filename: config.name + '/' + config.entrie + '/' + config.env + '/files.json',
+    filename: config.name + '/' + config.service + '/' + config.env + '/files.json',
     fields: ['assets', 'chunks'],
     transform: function (data) {
       data.assets.forEach(function(asset) {
@@ -104,10 +104,10 @@ var statsWriterPlugin = function(config) {
 };
 
 var htmlWebpackPlugin = function(config) {
-  var worona = require('../dist/vendors-' + config.entrie + '-worona/worona.json')
-  var vendors = worona.cdn[config.entrie][config.env].main.file;
+  var worona = require('../dist/vendors-' + config.service + '-worona/worona.json')
+  var vendors = worona.cdn[config.service][config.env].main.file;
   return new HtmlWebpackPlugin({
-    filename: config.name + '/' + config.entrie + '/' + config.env + '/html/index.html',
+    filename: config.name + '/' + config.service + '/' + config.env + '/html/index.html',
     inject: false,
     title: 'Worona Dashboard',
     template: path.resolve('node_modules', config.name, 'html', 'index.html'),
@@ -124,7 +124,7 @@ var htmlWebpackPlugin = function(config) {
 var copyFaviconPlugin = function(config) {
   return new CopyWebpackPlugin([{
     from: 'node_modules/' + config.name + '/html/favicon.png',
-    to: config.name + '/' + config.entrie + '/' + config.env + '/html/favicon.png'
+    to: config.name + '/' + config.service + '/' + config.env + '/html/favicon.png'
   }]);
 };
 

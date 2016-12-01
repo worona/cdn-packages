@@ -12,11 +12,11 @@ switch (config.type) {
       plugins.dedupePlugin(config),
       plugins.occurrenceOrderPlugin(config),
       plugins.dllPlugin(config),
-      plugins.fixModuleIdAndChunkIdPlugin(config),
+      // plugins.fixModuleIdAndChunkIdPlugin(config),
       plugins.statsWriterPlugin(config),
     ].filter(function(plugin) { return typeof plugin !== 'undefined'; });
     module.exports = {
-      entry: { main: require('core-' + config.entrie + '-worona/vendors.json') },
+      entry: { main: require('core-' + config.service + '-worona/vendors.json') },
       output: output.vendors(config),
       plugins: pluginsArr,
     };
@@ -47,7 +47,7 @@ switch (config.type) {
     module.exports = {
       entry: { main: [
         'script!systemjs/dist/system.js',
-        './node_modules/' + config.name + '/src/' + config.entrie + '/index.js'
+        './node_modules/' + config.name + '/src/' + config.service + '/index.js'
       ] },
       output: output.core(config),
       module: { loaders: loadersArr },
@@ -79,7 +79,7 @@ switch (config.type) {
       loaders.json(config),
     ].filter(function(loader) { return typeof loader !== 'undefined'; });
     module.exports = {
-      entry: { main: './node_modules/' + config.name + '/src/' + config.entrie + '/index.js' },
+      entry: { main: './node_modules/' + config.name + '/src/' + config.service + '/index.js' },
       output: output.packages(config),
       module: { loaders: loadersArr },
       resolve: { extensions: ['', '.js', '.jsx'] },

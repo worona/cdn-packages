@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- This script has to be above the GTM scripts -->
+    <script type="text/javascript">
+      // from ["prop1=Y","prop2=Z"]
+      // to { prop1 =  Y, pro2 = Z}
+      function toObj(arr) {
+        var obj = {};
+        for (var i=0; i< arr.length; i++) {
+           element = arr[i].split('=');
+           obj[element[0]] = element[1];
+        }
+        return obj;
+      }
+
+      var query_string = window.location.search;
+
+      var final = {}
+
+      if (query_string != "") {
+        var params = query_string.slice(1).split('&');
+        var eventname = [];
+
+        eventname[0] = params.shift();
+        final = toObj(eventname);
+
+        if (params.length > 0) {
+          var props = toObj(params);
+          final['props'] = props;
+        }
+      }
+
+      // dataLayer
+      var dataLayer = dataLayer || [];
+
+      dataLayer.push(final);
+
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KBSB5N');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KBSB5N" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+  </body>
+</html>

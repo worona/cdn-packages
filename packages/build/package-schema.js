@@ -66,10 +66,15 @@ const Cdn = new Schema({
 });
 
 const Menu = new Schema({
+  services: {
+    type: [String],
+    required: true,
+    enum: ['app', 'amp', 'fbia'],
+  },
   category: {
     type: String,
     required: true,
-    enum: ['General', 'Appearance', 'Extensions', 'Publish'],
+    enum: ['General', 'Themes', 'Extensions', 'Publish'],
   },
   order: {
     type: Number,
@@ -115,8 +120,8 @@ const Package = new Schema({
     required: true,
     enum: ['vendors', 'core', 'theme', 'extension'],
   },
-  service: {
-    type: String,
+  services: {
+    type: [String],
     required: true,
     enum: ['dashboard', 'app', 'amp', 'fbia'],
   },

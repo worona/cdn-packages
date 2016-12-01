@@ -6,8 +6,8 @@ import webpack from './webpack';
 import save from './save';
 import purge from './purge';
 
-const update = async ({ one }) => {
-  const packages = one ? [await inquire()] : await allPackages({ force: argv.force });
+const update = async ({ add }) => {
+  const packages = add ? [await inquire()] : await allPackages({ force: argv.force });
   for (let i = 0; i < packages.length; i += 1) {
     const { name, version } = packages[i];
     console.log(`\nUpdating package ${name} to ${version}. Please wait...\n`);
@@ -15,7 +15,7 @@ const update = async ({ one }) => {
     const { worona, description, keywords } = require(`../node_modules/${name}/package.json`);
     const config = { ...worona, name, version, description, keywords };
     if (worona.type === 'core') {
-      const vendorsName = `vendors-${config.service}-worona`;
+      const vendorsName = `vendors-${config.services[0]}-worona`;
       await webpack({ ...config, name: vendorsName, type: 'vendors' });
       await save({ name: vendorsName });
     }
@@ -31,6 +31,6 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-update({ one: argv.one });
+update({ add: argv.add });
 
 export default update;

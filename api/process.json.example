@@ -1,0 +1,15 @@
+{
+  apps : [{
+    name        : "server",
+    script      : "./build/server.js",
+    watch       : true,
+    env_dev: {
+      "NODE_ENV": "development",
+    },
+    env : {
+      "NODE_ENV": "production",
+      "AWS_ACCESS_KEY_ID": "XXXXXXXXXXXXXXXXXXXX",
+      "AWS_SECRET_ACCESS_KEY": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    }
+  }]
+} 

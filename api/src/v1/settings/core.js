@@ -4,7 +4,10 @@ export default async (req, res) => {
   const env = req.params.env;
   const packages = req.db.collection('packages');
   const docs = await packages.find(
-    { service, core: true, type: { $in: ['extension', 'theme'] } },
+    { core: true,
+      services: { $in: ['dashboard'] },
+      type: { $in: ['extension', 'theme'] },
+    },
     { fields: {
       _id: 0,
       name: 1,
