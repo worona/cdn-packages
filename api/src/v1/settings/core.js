@@ -5,7 +5,7 @@ export default async (req, res) => {
   const packages = req.db.collection('packages');
   const docs = await packages.find(
     { core: true,
-      services: { $in: ['dashboard'] },
+      services: { $in: [service] },
       type: { $in: ['extension', 'theme'] },
     },
     { fields: {
