@@ -30,6 +30,6 @@ export default async (req, res) => {
     const woronaInfo = { ...doc.woronaInfo, ...rest, main: pkg.cdn[service][env].main.file };
     response.push({ ...doc, woronaInfo });
   }
-  response.push({ ...site, woronaInfo: { name: 'site-general-settings' } });
+  response.push({ ...site, woronaInfo: { name: 'site-general-settings', namespace: 'generalSite' } });
   res.json(response);
 };
