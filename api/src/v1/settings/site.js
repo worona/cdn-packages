@@ -6,9 +6,12 @@ export default async (req, res) => {
   const type = req.params.type;
   const settings = req.db.collection(`settings-${type}`);
   const packages = req.db.collection('packages');
+  const sites = req.db.collection('sites');
+  const site = await sites.findOne({ _id: siteId }, { fields: {
+    _id: 0, userIds: 0, createdAt: 0, modifiedAt: 0, status: 0 } });
   const docs = await settings.find(
     { 'woronaInfo.siteId': siteId, 'woronaInfo.active': true },
-    { fields: { _id: 0, 'woronaInfo.active': 0 } }
+    { fields: { _id: 0, 'woronaInfo.active': 0, 'woronaInfo.siteId': 0 } }
   ).toArray();
   const response = [];
   const fields = {
@@ -27,5 +30,6 @@ export default async (req, res) => {
     const woronaInfo = { ...doc.woronaInfo, ...rest, main: pkg.cdn[service][env].main.file };
     response.push({ ...doc, woronaInfo });
   }
+  response.push({ ...site, woronaInfo: { name: 'site-general-settings' } });
   res.json(response);
 };
