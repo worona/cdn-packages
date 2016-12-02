@@ -5,7 +5,7 @@
   "description": "Worona Express Server for settings API",
   "main": "src/server.js",
   "scripts": {
-    "clean": "rimraf build/server.js",
+    "clean": "rimraf dist/server.js",
     "start": "nodemon src/server.js --watch src/ --exec babel-node",
     "build": "npm run clean && webpack -p"
   },

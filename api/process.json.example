@@ -1,7 +1,7 @@
 {
   apps : [{
     name        : "server",
-    script      : "./build/server.js",
+    script      : "./dist/server.js",
     watch       : true,
     env_dev: {
       "NODE_ENV": "development",
@@ -12,4 +12,4 @@
       "AWS_SECRET_ACCESS_KEY": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
   }]
-} 
+}

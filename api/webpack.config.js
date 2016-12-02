@@ -37,7 +37,7 @@ module.exports = {
     chunkFilename: '[id].[hash:5]-[chunkhash:7].js',
     filename: '[name].js',
     libraryTarget: 'commonjs2',
-    path: './build',
+    path: './dist',
   },
 
   plugins: [
