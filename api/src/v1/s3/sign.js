@@ -1,4 +1,4 @@
-import config from '../../config.json';
+import config from '../../../config.json';
 
 process.env.AWS_ACCESS_KEY_ID = config.AWS_ACCESS_KEY_ID;
 process.env.AWS_SECRET_ACCESS_KEY = config.AWS_SECRET_ACCESS_KEY;

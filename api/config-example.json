@@ -1,0 +1,11 @@
+{
+  "mongoUrl": "mongodb://user:pass@server:port,server2:port2/database?replicaSet=XXXXX",
+  "port": 4500,
+  "AWS_ACCESS_KEY_ID": "XXXXXXXXXXXXXXX",
+  "AWS_SECRET_ACCESS_KEY": "XXXXXXXXXXXXXXX",
+  "keycdn": {
+    "url": "XXXXXXX.kxcdn.com",
+    "apiKey": "XXXXXXXXXX",
+    "zoneId": "1234567890"
+  }
+}

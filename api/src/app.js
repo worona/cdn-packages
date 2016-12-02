@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import express from 'express';
 import mongodb from 'express-mongo-db';
 import cors from 'cors';
-import config from './config.json';
+import config from '../config.json';
 import settings from './v1/settings';
 import s3 from './v1/s3';
 

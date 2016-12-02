@@ -7,7 +7,8 @@
   "scripts": {
     "clean": "rimraf dist/server.js",
     "start": "nodemon src/server.js --watch src/ --exec babel-node",
-    "build": "npm run clean && webpack -p"
+    "build": "npm run clean && webpack -p && npm run purge",
+    "purge": "babel-node build/purge.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "cors": "^2.8.1",
     "express": "^4.13.4",
     "express-mongo-db": "^2.0.3",
+    "keycdn": "^0.2.0",
     "mongodb": "^2.1.21",
     "react-s3-uploader": "^3.3.0"
   }
