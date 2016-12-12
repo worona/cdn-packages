@@ -15,19 +15,11 @@ export default async ({ name }) => {
   if (error) throw new Error(error);
   log('\nValidation succeed.');
   mongoose.connect(config.mongoUrl);
-  let doc = await packageModel.findOne({ name }).exec();
-  if (doc === null) {
-    log('Package not found. Creating new entry.');
-    doc = packageModel(values);
-    await doc.save();
-  } else {
-    log('Package found. Overwriting values.');
-    await packageModel
-      .where({ _id: doc._id })
-      .setOptions({ overwrite: true })
-      .update(values)
-      .exec();
-  }
+  await packageModel.findOneAndUpdate(
+    { name },
+    values,
+    { upsert: true, overwrite: true }
+  ).exec();
   mongoose.connection.close();
   log('Package saved successfully on the database.\n');
 };
