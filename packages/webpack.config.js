@@ -9,10 +9,10 @@ switch (config.type) {
     var pluginsArr = [
       plugins.definePlugin(config),
       plugins.uglifyJsPlugin(config),
-      plugins.dedupePlugin(config),
+      // plugins.dedupePlugin(config),
       plugins.occurrenceOrderPlugin(config),
       plugins.dllPlugin(config),
-      // plugins.fixModuleIdAndChunkIdPlugin(config),
+      plugins.fixModuleIdAndChunkIdPlugin(config),
       plugins.statsWriterPlugin(config),
     ].filter(function(plugin) { return typeof plugin !== 'undefined'; });
     module.exports = {
