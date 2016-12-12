@@ -2,3 +2,4 @@ dist
 node_modules
 process.json
 config.json
+build/.pm2
