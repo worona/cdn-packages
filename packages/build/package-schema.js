@@ -84,7 +84,17 @@ const Menu = new Schema({
   _id: false,
 });
 
-const Package = new Schema({
+const Namespace = new Schema({
+  dashboard: {
+    type: String,
+  },
+  app: {
+    type: String,
+  },
+  _id: false,
+});
+
+const Package = namespaceType => new Schema({
   name: {
     type: String,
     required: true,
@@ -111,9 +121,8 @@ const Package = new Schema({
     match: [/^[a-zA-Z0-9]+$/, 'Slug must be in camelcase'],
   },
   namespace: {
-    type: String,
+    type: namespaceType === 'string' ? String : Namespace,
     required: true,
-    match: [/^[a-zA-Z0-9]+$/, 'Namespace must be in camelcase'],
   },
   type: {
     type: String,

@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
 import { cyan } from 'colors';
 import config from './config.json';
-import PackageSchema from './package-schema';
+import packageSchema from './package-schema';
 
 mongoose.Promise = global.Promise;
-const packageModel = mongoose.model('Package', PackageSchema);
 
 const log = msg => console.log(cyan(msg));
 
 export default async ({ name }) => {
   const values = require(`../dist/${name}/worona.json`);
+  const packageModel = mongoose.model('Package', packageSchema(typeof values.namespace));
   const pkg = packageModel(values);
   const error = await pkg.validate();
   if (error) throw new Error(error);
@@ -20,6 +20,6 @@ export default async ({ name }) => {
     values,
     { upsert: true, overwrite: true }
   ).exec();
-  mongoose.connection.close();
   log('Package saved successfully on the database.\n');
+  mongoose.connection.close();
 };
