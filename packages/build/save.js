@@ -8,8 +8,7 @@ mongoose.Promise = global.Promise;
 const log = msg => console.log(cyan(msg));
 
 export default async (values) => {
-  console.log(JSON.stringify(values, null, 2));
-  const packageModel = mongoose.model('Package', packageSchema(typeof values.namespace));
+  const packageModel = mongoose.model('Package', packageSchema);
   const pkg = packageModel(values);
   const error = await pkg.validate();
   if (error) throw new Error(error);
