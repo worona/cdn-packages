@@ -1,11 +1,11 @@
 import rimraf from 'rimraf';
 import path from 'path';
-import fs from 'fs';
 import { spawn } from 'child-process-promise';
 
 export default async (config) => {
-  const { name, type, services } = config;
+  const { name } = config;
   const envs = ['dev', 'prod'];
+  const services = ['dashboard', 'app', 'amp', 'fbia'].filter(service => config[service]);
   if (services.length === 0) throw new Error('No entry found. Please check the src folder.');
   rimraf.sync(path.resolve('dist', name));
   const files = {};
@@ -15,7 +15,7 @@ export default async (config) => {
       const env = envs[j];
       await spawn('./node_modules/.bin/webpack', ['--config', 'webpack.config.js', '--progress',
         '--name', name,
-        '--type', type,
+        '--type', config[service].type,
         '--service', service,
         '--env', env,
       ], { stdio: 'inherit' });
@@ -24,5 +24,5 @@ export default async (config) => {
       rimraf.sync(`dist/${name}/${service}/${env}/files.json`);
     }
   }
-  fs.writeFileSync(`dist/${name}/worona.json`, JSON.stringify({ ...config, cdn: files }, null, 2));
+  return files;
 };
