@@ -1,7 +1,5 @@
 import { Schema } from 'mongoose';
 
-const atLeastOneCdn = value => !!value.dashboard || !!value.app;
-
 const File = new Schema({
   file: {
     type: String,
@@ -43,33 +41,10 @@ const Files = new Schema({
   _id: false,
 });
 
-const Env = new Schema({
-  dev: {
-    type: Files,
-    required: true,
-  },
-  prod: {
-    type: Files,
-    required: true,
-  },
-  _id: false,
-});
-
-const Cdn = new Schema({
-  dashboard: {
-    type: Env,
-  },
-  app: {
-    type: Env,
-  },
-  _id: false,
-});
-
 const Menu = new Schema({
-  services: {
-    type: [String],
+  name: {
+    type: String,
     required: true,
-    enum: ['app', 'amp', 'fbia'],
   },
   category: {
     type: String,
@@ -84,17 +59,82 @@ const Menu = new Schema({
   _id: false,
 });
 
-const Namespace = new Schema({
-  dashboard: {
+const Menus = new Schema({
+  app: {
+    type: Menu,
+  },
+  fbia: {
+    type: Menu,
+  },
+  amp: {
+    type: Menu,
+  },
+  _id: false,
+});
+
+const Dashboard = new Schema({
+  namespace: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['vendors', 'core', 'theme', 'extension'],
+  },
+  default: {
+    type: Boolean,
+    default: false,
+  },
+  core: {
+    type: Boolean,
+  },
+  menu: {
+    type: Menus,
+  },
+  dev: {
+    type: Files,
+    required: true,
+  },
+  prod: {
+    type: Files,
+    required: true,
+  },
+  _id: false,
+});
+
+const App = new Schema({
+  namespace: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['vendors', 'core', 'theme', 'extension'],
+  },
+  default: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  listed: {
+    type: Boolean,
+    default: true,
+  },
+  name: {
     type: String,
   },
-  app: {
+  description: {
+    type: String,
+  },
+  image: {
     type: String,
   },
   _id: false,
 });
 
-const Package = namespaceType => new Schema({
+const Package = new Schema({
   name: {
     type: String,
     required: true,
@@ -111,32 +151,6 @@ const Package = namespaceType => new Schema({
   keywords: {
     type: [String],
   },
-  niceName: {
-    type: String,
-    required: true,
-  },
-  slug: {
-    type: String,
-    required: true,
-    match: [/^[a-zA-Z0-9]+$/, 'Slug must be in camelcase'],
-  },
-  namespace: {
-    type: namespaceType === 'string' ? String : Namespace,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-    enum: ['vendors', 'core', 'theme', 'extension'],
-  },
-  services: {
-    type: [String],
-    required: true,
-    enum: ['dashboard', 'app', 'amp', 'fbia'],
-  },
-  menu: {
-    type: Menu,
-  },
   authors: {
     type: [{
       type: String,
@@ -144,35 +158,15 @@ const Package = namespaceType => new Schema({
     }],
     required: true,
   },
-  default: {
+  private: {
     type: Boolean,
-    required: true,
-    default: 0,
+    default: false,
   },
-  core: {
-    type: Boolean,
-    required: true,
-    default: 0,
+  dashboard: {
+    type: Dashboard,
   },
-  listed: {
-    type: Boolean,
-    required: true,
-    default: 1,
-  },
-  deactivable: {
-    type: Boolean,
-    required: true,
-    default: 1,
-  },
-  public: {
-    type: Boolean,
-    required: true,
-    default: 1,
-  },
-  cdn: {
-    type: Cdn,
-    required: true,
-    validate: [atLeastOneCdn, 'You need to add files from at least one service (dashboard or app).'],
+  app: {
+    type: App,
   },
 }, {
   collection: 'packages',
