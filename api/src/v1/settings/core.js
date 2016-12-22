@@ -4,25 +4,23 @@ export default async (req, res) => {
   const env = req.params.env;
   const packages = req.db.collection('packages');
   const docs = await packages.find(
-    { core: true,
-      services: { $in: [service] },
-      type: { $in: ['extension', 'theme'] },
-    },
+    { [`${service}.core`]: true, [`${service}.type`]: { $in: ['extension', 'theme'] } },
     { fields: {
       _id: 0,
       name: 1,
-      namespace: 1,
-      [`cdn.${service}.${env}.main`]: 1,
-      [`cdn.${service}.${env}.assets`]: 1,
+      [`${service}.namespace`]: 1,
+      [`${service}.${env}.main`]: 1,
+      [`${service}.${env}.assets`]: 1,
     },
   }).toArray();
 
   res.json(docs.map((doc) => {
-    const { cdn, ...rest } = doc;
+    const { dashboard, ...rest } = doc;
     return {
       ...rest,
-      main: doc.cdn[service][env].main.file,
-      assets: doc.cdn[service][env].assets,
+      namespace: doc[service].namespace,
+      main: doc[service][env].main.file,
+      assets: doc[service][env].assets,
     };
   }));
 };
