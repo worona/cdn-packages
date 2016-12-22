@@ -84,8 +84,10 @@ const Dashboard = new Schema({
   },
   default: {
     type: Boolean,
-    required: true,
     default: false,
+  },
+  core: {
+    type: Boolean,
   },
   menu: {
     type: Menus,

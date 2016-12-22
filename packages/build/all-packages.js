@@ -16,5 +16,5 @@ export default async ({ force }) => {
       console.log(`\nPackage '${name}' is already up to date: ${localVersion}.`);
     }
   }
-  return outdatedPackages.sort(a => /core/.test(a.name)).reverse();
+  return outdatedPackages.sort(a => /vendors/.test(a.name)).reverse();
 };

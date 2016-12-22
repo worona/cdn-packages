@@ -1,12 +1,13 @@
 import rimraf from 'rimraf';
 import path from 'path';
 import { spawn } from 'child-process-promise';
+import { writeFileSync } from 'fs';
 
 export default async (config) => {
   const { name } = config;
   const envs = ['dev', 'prod'];
   const services = ['dashboard', 'app', 'amp', 'fbia'].filter(service => config[service]);
-  if (services.length === 0) throw new Error('No entry found. Please check the src folder.');
+  if (services.length === 0) throw new Error('No service found. Please check the package json.');
   rimraf.sync(path.resolve('dist', name));
   const files = {};
   for (let i = 0; i < services.length; i += 1) {
@@ -24,5 +25,6 @@ export default async (config) => {
       rimraf.sync(`dist/${name}/${service}/${env}/files.json`);
     }
   }
+  writeFileSync(`dist/${name}/files.json`, JSON.stringify(files, null, 2));
   return files;
 };

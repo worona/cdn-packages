@@ -15,11 +15,6 @@ const update = async ({ add }) => {
     await install({ name, version });
     const { worona, description, keywords } = require(`../node_modules/${name}/package.json`);
     const config = { ...worona, name, version, description, keywords };
-    if (worona.type === 'core') {
-      const vendorsName = `vendors-${config.services[0]}-worona`;
-      const files = await webpack({ ...config, name: vendorsName, type: 'vendors' });
-      await save({ ...config, name: vendorsName, type: 'vendors', files });
-    }
     const files = await webpack(config);
     await save(merge(config, files));
   }
