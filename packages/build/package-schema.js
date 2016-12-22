@@ -115,7 +115,6 @@ const App = new Schema({
   },
   default: {
     type: Boolean,
-    required: true,
     default: false,
   },
   listed: {
