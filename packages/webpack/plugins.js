@@ -104,8 +104,8 @@ var statsWriterPlugin = function(config) {
 };
 
 var htmlWebpackPlugin = function(config) {
-  var worona = require('../dist/vendors-' + config.service + '-worona/worona.json')
-  var vendors = worona.cdn[config.service][config.env].main.file;
+  var worona = require('../dist/vendors-' + config.service + '-worona/files.json')
+  var vendors = worona[config.service][config.env].main.file;
   return new HtmlWebpackPlugin({
     filename: config.name + '/' + config.service + '/' + config.env + '/html/index.html',
     inject: false,

@@ -1,4 +1,5 @@
 import { argv } from 'yargs';
+import { merge } from 'lodash';
 import inquire from './inquire';
 import allPackages from './all-packages';
 import install from './install';
@@ -14,13 +15,8 @@ const update = async ({ add }) => {
     await install({ name, version });
     const { worona, description, keywords } = require(`../node_modules/${name}/package.json`);
     const config = { ...worona, name, version, description, keywords };
-    if (worona.type === 'core') {
-      const vendorsName = `vendors-${config.services[0]}-worona`;
-      await webpack({ ...config, name: vendorsName, type: 'vendors' });
-      await save({ name: vendorsName });
-    }
-    await webpack(config);
-    await save({ name });
+    const files = await webpack(config);
+    await save(merge(config, files));
   }
   if (packages.length > 0) await purge();
   console.log('\n');

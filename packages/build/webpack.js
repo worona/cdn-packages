@@ -1,12 +1,13 @@
 import rimraf from 'rimraf';
 import path from 'path';
-import fs from 'fs';
 import { spawn } from 'child-process-promise';
+import { writeFileSync } from 'fs';
 
 export default async (config) => {
-  const { name, type, services } = config;
+  const { name } = config;
   const envs = ['dev', 'prod'];
-  if (services.length === 0) throw new Error('No entry found. Please check the src folder.');
+  const services = ['dashboard', 'app', 'amp', 'fbia'].filter(service => config[service]);
+  if (services.length === 0) throw new Error('No service found. Please check the package json.');
   rimraf.sync(path.resolve('dist', name));
   const files = {};
   for (let i = 0; i < services.length; i += 1) {
@@ -15,7 +16,7 @@ export default async (config) => {
       const env = envs[j];
       await spawn('./node_modules/.bin/webpack', ['--config', 'webpack.config.js', '--progress',
         '--name', name,
-        '--type', type,
+        '--type', config[service].type,
         '--service', service,
         '--env', env,
       ], { stdio: 'inherit' });
@@ -24,5 +25,6 @@ export default async (config) => {
       rimraf.sync(`dist/${name}/${service}/${env}/files.json`);
     }
   }
-  fs.writeFileSync(`dist/${name}/worona.json`, JSON.stringify({ ...config, cdn: files }, null, 2));
+  writeFileSync(`dist/${name}/files.json`, JSON.stringify(files, null, 2));
+  return files;
 };

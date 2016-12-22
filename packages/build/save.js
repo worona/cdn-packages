@@ -7,16 +7,15 @@ mongoose.Promise = global.Promise;
 
 const log = msg => console.log(cyan(msg));
 
-export default async ({ name }) => {
-  const values = require(`../dist/${name}/worona.json`);
-  const packageModel = mongoose.model('Package', packageSchema(typeof values.namespace));
+export default async (values) => {
+  const packageModel = mongoose.model('Package', packageSchema);
   const pkg = packageModel(values);
   const error = await pkg.validate();
   if (error) throw new Error(error);
   log('\nValidation succeed.');
   mongoose.connect(config.mongoUrl);
   await packageModel.findOneAndUpdate(
-    { name },
+    { name: values.name },
     values,
     { upsert: true, overwrite: true }
   ).exec();
