@@ -14,11 +14,11 @@ export default async (values) => {
   if (error) throw new Error(error);
   log('\nValidation succeed.');
   mongoose.connect(config.mongoUrl);
-  await packageModel.findOneAndUpdate(
+  await packageModel.update(
     { name: values.name },
     values,
-    { upsert: true, overwrite: true }
-  ).exec();
+    { upsert: true, overwrite: true })
+  .exec();
   log('Package saved successfully on the database.\n');
   mongoose.connection.close();
 };

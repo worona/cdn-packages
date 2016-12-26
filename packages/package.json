@@ -45,7 +45,7 @@
     "keycdn": "^0.2.0",
     "lodash": "^4.16.4",
     "lodash-webpack-plugin": "^0.10.1",
-    "mongoose": "^4.4.20",
+    "mongoose": "^4.7.4",
     "node-sass": "^3.10.1",
     "postcss": "^5.2.4",
     "postcss-cssnext": "^2.8.0",
