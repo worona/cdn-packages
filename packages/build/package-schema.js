@@ -42,7 +42,7 @@ const Files = new Schema({
 });
 
 const Menu = new Schema({
-  name: {
+  niceName: {
     type: String,
     required: true,
   },
