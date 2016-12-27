@@ -16,22 +16,22 @@ export default async (req, res) => {
   const response = [];
   const fields = {
     _id: 0,
-    [`cdn.${service}.${env}.main.file`]: 1,
-    namespace: 1,
+    [`${service}.${env}.main.file`]: 1,
+    [`${service}.namespace`]: 1,
     ...{
-      dashboard: { menu: 1, niceName: 1, type: 1 },
+      dashboard: { [`${service}.menu`]: 1 },
       app: {},
     }[service],
   };
   for (let i = 0; i < docs.length; i += 1) {
     const doc = docs[i];
     const pkg = await packages.findOne(
-      { name: doc.woronaInfo.name, services: { $in: [service] } },
+      { name: doc.woronaInfo.name, [service]: { $exists: true } },
       { fields }
     );
     if (pkg) {
-      const { cdn, ...rest } = pkg;
-      const woronaInfo = { ...doc.woronaInfo, ...rest, main: pkg.cdn[service][env].main.file };
+      const { app, dashboard, ...rest } = pkg;
+      const woronaInfo = { ...doc.woronaInfo, ...rest, main: pkg[service][env].main.file };
       response.push({ ...doc, woronaInfo });
     }
   }
