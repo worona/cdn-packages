@@ -130,6 +130,14 @@ const App = new Schema({
   image: {
     type: String,
   },
+  dev: {
+    type: Files,
+    required: true,
+  },
+  prod: {
+    type: Files,
+    required: true,
+  },
   _id: false,
 });
 
