@@ -18,7 +18,7 @@ var babel = function(config) {
 };
 
 var css = function(config) {
-  if (config.env === 'dev' || config.type === 'core') {
+  if (config.type === 'core') {
     return {
       test: /\.css$/,
       loaders: [
@@ -39,7 +39,7 @@ var css = function(config) {
 };
 
 var sass = function(config) {
-  if (config.env === 'dev' || config.type === 'core') {
+  if (config.type === 'core') {
     return {
       test: /\.s[ac]ss$/,
       loaders: [
