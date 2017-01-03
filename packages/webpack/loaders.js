@@ -3,7 +3,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var ignoreLoader = function(config) {
   return {
-    test: /packages\/.+-worona\/src\/(dashboard\/)?index\.js$/,
+    test: /packages\/.+-worona\/src\/(dashboard\/|app\/)?index\.js$/,
     loader: 'ignore-loader',
     exclude: new RegExp(config.name),
   };
