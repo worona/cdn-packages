@@ -11,7 +11,13 @@ export default async (req, res) => {
     _id: 0, userIds: 0, createdAt: 0, modifiedAt: 0, status: 0 } });
   const docs = await settings.find(
     { 'woronaInfo.siteId': siteId, 'woronaInfo.active': true },
-    { fields: { _id: 0, 'woronaInfo.active': 0, 'woronaInfo.siteId': 0, 'woronaInfo.init': 0 } }
+    { fields: {
+      _id: 0,
+      'woronaInfo.active': 0,
+      'woronaInfo.siteId': 0,
+      'woronaInfo.init': 0,
+      'woronaInfo.namespace': 0,
+    } },
   ).toArray();
   const response = [];
   const fields = {
@@ -31,7 +37,12 @@ export default async (req, res) => {
     );
     if (pkg) {
       const { app, dashboard, ...rest } = pkg;
-      const woronaInfo = { ...doc.woronaInfo, ...rest, main: pkg[service][env].main.file };
+      const woronaInfo = {
+        ...rest,
+        ...doc.woronaInfo,
+        main: pkg[service][env].main.file,
+        namespace: pkg[service].namespace,
+      };
       response.push({ ...doc, woronaInfo });
     }
   }
