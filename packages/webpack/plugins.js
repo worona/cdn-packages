@@ -105,10 +105,11 @@ var statsWriterPlugin = function(config) {
 var htmlWebpackPlugin = function(config) {
   var worona = require('../dist/vendors-' + config.service + '-worona/files.json')
   var vendors = worona[config.service][config.env].main.file;
+  var title = 'Worona ' + config.service[0].toUpperCase() + config.service.slice(1);
   return new HtmlWebpackPlugin({
     filename: config.name + '/' + config.service + '/' + config.env + '/html/index.html',
     inject: false,
-    title: 'Worona Dashboard',
+    title: title,
     template: path.resolve('node_modules', config.name, 'html', 'index.html'),
     vendorsFile: 'https://cdn.worona.io/packages/' + vendors,
     appMountId: 'root',
