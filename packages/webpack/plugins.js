@@ -38,8 +38,7 @@ var occurrenceOrderPlugin = function(config) {
 };
 
 var extractTextPlugin = function(config) {
-  if (config.env === 'prod')
-    return new ExtractTextPlugin(config.name + '/' + config.service + '/' + config.env + '/css/' + config.name + '.[contenthash].css');
+  return new ExtractTextPlugin(config.name + '/' + config.service + '/' + config.env + '/css/' + config.name + '.[contenthash].css');
 };
 
 var dllReferencePlugin = function(config) {
