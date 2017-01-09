@@ -9,6 +9,7 @@ export default async (req, res) => {
   const sites = req.db.collection('sites');
   const site = await sites.findOne({ _id: siteId }, { fields: {
     _id: 0, userIds: 0, createdAt: 0, modifiedAt: 0, status: 0 } });
+  if (!site) { res.status(404).json({ error: 'no site found' }); return; }
   const docs = await settings.find(
     { 'woronaInfo.siteId': siteId, 'woronaInfo.active': true },
     { fields: {
