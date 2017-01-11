@@ -7,9 +7,12 @@ export default async (req, res) => {
   const settings = req.db.collection('settings-live');
   const packages = req.db.collection('packages');
   const sites = req.db.collection('sites');
+
   const site = await sites.findOne({ _id: siteId }, { fields: {
     userIds: 0, createdAt: 0, modifiedAt: 0, status: 0 } });
+
   if (!site) { res.status(404).json({ error: 'no site found' }); return; }
+
   const docs = await settings.find(
     { 'woronaInfo.siteId': siteId, 'woronaInfo.active': true },
     { fields: {
@@ -19,10 +22,13 @@ export default async (req, res) => {
       'woronaInfo.namespace': 0,
     } },
   ).toArray();
+
   if (type === 'preview') {
     docs.push({ woronaInfo: { name: 'preview-settings-app-extension-worona' } });
   }
+
   const response = [];
+  const cacheTags = [`siteId:${siteId}`];
   const fields = {
     _id: 0,
     [`${service}.${env}.main.file`]: 1,
@@ -32,6 +38,7 @@ export default async (req, res) => {
       app: {},
     }[service],
   };
+
   for (let i = 0; i < docs.length; i += 1) {
     const doc = docs[i];
     const pkg = await packages.findOne(
@@ -47,8 +54,12 @@ export default async (req, res) => {
         namespace: pkg[service].namespace,
       };
       response.push({ ...doc, woronaInfo });
+      cacheTags.push(doc.woronaInfo.name);
     }
   }
-  response.push({ ...site, woronaInfo: { name: 'site-general-settings', namespace: 'generalSite' } });
+
+  response.push({ ...site, woronaInfo: { name: 'site-general-settings-worona', namespace: 'generalSite' } });
+
+  res.setHeader('Cache-Tag', cacheTags.join(' '));
   res.json(response);
 };

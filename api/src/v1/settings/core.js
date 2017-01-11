@@ -14,6 +14,9 @@ export default async (req, res) => {
     },
   }).toArray();
 
+  const cacheTags = docs.map(doc => doc.name);
+
+  res.setHeader('Cache-Tag', cacheTags.join(' '));
   res.json(docs.map((doc) => {
     const { dashboard, ...rest } = doc;
     return {
