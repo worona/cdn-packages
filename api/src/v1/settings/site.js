@@ -28,7 +28,7 @@ export default async (req, res) => {
   }
 
   const response = [];
-  const cacheTags = [`siteId:${siteId}`];
+  const cacheTags = [siteId];
   const fields = {
     _id: 0,
     [`${service}.${env}.main.file`]: 1,
