@@ -43,8 +43,6 @@ const Menus = new Schema({
 const Dashboard = new Schema({
   namespace: { type: String, required: true },
   type: { type: String, required: true, enum: [ 'vendors', 'core', 'theme', 'extension' ] },
-  default: { type: Boolean, default: false },
-  core: { type: Boolean },
   menu: { type: Menus },
   dev: { type: Files, required: true },
   prod: { type: Files, required: true },
