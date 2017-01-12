@@ -27,7 +27,7 @@ const Menu = new Schema({
   category: {
     type: String,
     required: true,
-    enum: [ 'General', 'Themes', 'Extensions', 'Publish' ],
+    enum: [ 'Settings', 'Themes', 'Extensions', 'Publish' ],
   },
   order: { type: Number, min: 1, max: 1000 },
   _id: false,
