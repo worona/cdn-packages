@@ -8,7 +8,7 @@ import save from './save';
 import purge from './purge';
 
 const update = async ({ add }) => {
-  const packages = add ? [await inquire()] : await allPackages({ force: argv.force });
+  const packages = add ? [ await inquire() ] : await allPackages({ force: argv.force });
   for (let i = 0; i < packages.length; i += 1) {
     const { name, version } = packages[i];
     console.log(`\nUpdating package ${name} to ${version}. Please wait...\n`);
@@ -18,11 +18,12 @@ const update = async ({ add }) => {
     const files = await webpack(config);
     await save(merge(config, files));
   }
-  if (packages.length > 0) await purge();
+  if (packages.length > 0)
+    await purge();
   console.log('\n');
 };
 
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', err => {
   console.log(err.stack);
   process.exit(1);
 });

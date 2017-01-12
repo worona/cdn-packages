@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var path = require('path');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var FixModuleIdAndChunkIdPlugin = require('fix-moduleid-and-chunkid-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -23,7 +23,11 @@ var lodashModuleReplacementPlugin = function() {
 };
 
 var uglifyJsPlugin = function(config) {
-  if (config.env === 'prod' || config.name === 'bulma-dashboard-theme-worona' || config.name === 'publish-native-app-extension-worona' || config.name === 'general-app-extension-worona')
+  if (
+    config.env === 'prod' || config.name === 'bulma-dashboard-theme-worona' ||
+      config.name === 'publish-native-app-extension-worona' ||
+      config.name === 'general-app-extension-worona'
+  )
     return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
 };
 
@@ -38,13 +42,19 @@ var occurrenceOrderPlugin = function(config) {
 };
 
 var extractTextPlugin = function(config) {
-  return new ExtractTextPlugin(config.name + '/' + config.service + '/' + config.env + '/css/' + config.name + '.[contenthash].css');
+  return new ExtractTextPlugin(
+    config.name + '/' + config.service + '/' + config.env + '/css/' + config.name +
+      '.[contenthash].css',
+  );
 };
 
 var dllReferencePlugin = function(config) {
   return new webpack.DllReferencePlugin({
     context: '.',
-    manifest: require('../dist/vendors-' + config.service + '-worona/' + config.service + '/' + config.env + '/json/manifest.json'),
+    manifest: require(
+      '../dist/vendors-' + config.service + '-worona/' + config.service + '/' + config.env +
+        '/json/manifest.json',
+    ),
   });
 };
 
@@ -61,14 +71,14 @@ var fixModuleIdAndChunkIdPlugin = function() {
 
 var contextReplacementPlugin = function() {
   new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|es/);
-}
+};
 
 var statsWriterPlugin = function(config) {
   var output = { files: [] };
   return new StatsWriterPlugin({
     filename: config.name + '/' + config.service + '/' + config.env + '/files.json',
-    fields: ['assets', 'chunks'],
-    transform: function (data) {
+    fields: [ 'assets', 'chunks' ],
+    transform: function(data) {
       data.assets.forEach(function(asset) {
         if (!/html\/index\.html/.test(asset.name)) {
           var hash = /\.([a-z0-9]{32})\.\w+?$/.exec(asset.name)[1];
@@ -80,11 +90,7 @@ var statsWriterPlugin = function(config) {
             output.assets[type] = output.assets[type] || [];
             output.assets[type].push(filepath);
           }
-          output.files.push({
-            file: filepath,
-            filename: filename,
-            hash: hash,
-          });
+          output.files.push({ file: filepath, filename: filename, hash: hash });
         }
       });
       data.chunks.forEach(function(chunk) {
@@ -98,12 +104,12 @@ var statsWriterPlugin = function(config) {
         });
       });
       return JSON.stringify(output, null, 2);
-    }
+    },
   });
 };
 
 var htmlWebpackPlugin = function(config) {
-  var worona = require('../dist/vendors-' + config.service + '-worona/files.json')
+  var worona = require('../dist/vendors-' + config.service + '-worona/files.json');
   var vendors = worona[config.service][config.env].main.file;
   var title = 'Worona ' + config.service[0].toUpperCase() + config.service.slice(1);
   return new HtmlWebpackPlugin({
@@ -115,17 +121,19 @@ var htmlWebpackPlugin = function(config) {
     appMountId: 'root',
     window: {
       publicPath: 'https://cdn.worona.io/packages/dist/',
-      __worona__: { prod: (config.env === 'prod'), remote: true },
+      __worona__: { prod: config.env === 'prod', remote: true },
     },
     minify: { preserveLineBreaks: true, collapseWhitespace: true },
   });
 };
 
 var copyFaviconPlugin = function(config) {
-  return new CopyWebpackPlugin([{
-    from: 'node_modules/' + config.name + '/html/favicon.png',
-    to: config.name + '/' + config.service + '/' + config.env + '/html/favicon.png'
-  }]);
+  return new CopyWebpackPlugin([
+    {
+      from: 'node_modules/' + config.name + '/html/favicon.png',
+      to: config.name + '/' + config.service + '/' + config.env + '/html/favicon.png',
+    },
+  ]);
 };
 
 module.exports = {

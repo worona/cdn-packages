@@ -17,4 +17,4 @@ export default async ({ force }) => {
     }
   }
   return outdatedPackages.sort(a => /vendors/.test(a.name)).reverse();
-};
+}
