@@ -6,6 +6,8 @@
     "global-require": 0,
     "import/no-dynamic-require": 0,
     "no-underscore-dangle": ["error", { "allow": [ "_id" ] }],
-    "array-bracket-spacing": 0
+    "array-bracket-spacing": 0,
+    "curly": ["error", "multi-or-nest"],
+    "semi": 0
   }
 }
