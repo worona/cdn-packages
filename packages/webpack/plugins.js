@@ -44,7 +44,7 @@ var occurrenceOrderPlugin = function(config) {
 var extractTextPlugin = function(config) {
   return new ExtractTextPlugin(
     config.name + '/' + config.service + '/' + config.env + '/css/' + config.name +
-      '.[contenthash].css',
+      '.[contenthash].css'
   );
 };
 
@@ -53,7 +53,7 @@ var dllReferencePlugin = function(config) {
     context: '.',
     manifest: require(
       '../dist/vendors-' + config.service + '-worona/' + config.service + '/' + config.env +
-        '/json/manifest.json',
+        '/json/manifest.json'
     ),
   });
 };
