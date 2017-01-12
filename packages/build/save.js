@@ -7,18 +7,17 @@ mongoose.Promise = global.Promise;
 
 const log = msg => console.log(cyan(msg));
 
-export default async (values) => {
+export default async values => {
   const packageModel = mongoose.model('Package', packageSchema);
   const pkg = packageModel(values);
   const error = await pkg.validate();
-  if (error) throw new Error(error);
+  if (error)
+    throw new Error(error);
   log('\nValidation succeed.');
   mongoose.connect(config.mongoUrl);
-  await packageModel.update(
-    { name: values.name },
-    values,
-    { upsert: true, overwrite: true })
-  .exec();
+  await packageModel
+    .update({ name: values.name }, values, { upsert: true, overwrite: true })
+    .exec();
   log('Package saved successfully on the database.\n');
   mongoose.connection.close();
-};
+}

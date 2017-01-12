@@ -22,7 +22,7 @@ server {
 	# Disable SSLv3 (Poodle bug)
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-  server_name cdn.worona.io backend.worona.io;
+  server_name cdn.worona.io backend.worona.io direct.worona.io;
 
   # Cache
   expires $expires;
