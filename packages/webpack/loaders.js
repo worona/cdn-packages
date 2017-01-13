@@ -77,7 +77,6 @@ var json = function(config) {
     test: /\.json$/,
     loader: 'json-loader?name=' + config.name + '/' + config.service + '/' + config.env +
       '/jsons/[name].[hash].[ext]',
-    include: new RegExp('node_modules/' + config.name),
   };
 };
 
