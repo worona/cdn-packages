@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { unique } from 'shorthash';
+
 export default async (req, res) => {
   const siteId = req.params.siteId;
   const service = req.params.service;
@@ -8,42 +10,44 @@ export default async (req, res) => {
   const packages = req.db.collection('packages');
   const sites = req.db.collection('sites');
 
-  const site = await sites.findOne({ _id: siteId }, { fields: {
-    userIds: 0, createdAt: 0, modifiedAt: 0, status: 0 } });
+  const site = await sites.findOne({ _id: siteId }, {
+    fields: { userIds: 0, createdAt: 0, modifiedAt: 0, status: 0 },
+  });
 
-  if (!site) { res.status(404).json({ error: 'no site found' }); return; }
+  if (!site) {
+    res.status(404).json({ error: 'no site found' });
+    return;
+  }
 
-  const docs = await settings.find(
-    { 'woronaInfo.siteId': siteId, 'woronaInfo.active': true },
-    { fields: {
-      'woronaInfo.active': 0,
-      'woronaInfo.siteId': 0,
-      'woronaInfo.init': 0,
-      'woronaInfo.namespace': 0,
-    } },
-  ).toArray();
+  const docs = await settings
+    .find({ 'woronaInfo.siteId': siteId, 'woronaInfo.active': true }, {
+      fields: {
+        'woronaInfo.active': 0,
+        'woronaInfo.siteId': 0,
+        'woronaInfo.init': 0,
+        'woronaInfo.namespace': 0,
+      },
+    })
+    .toArray();
 
   if (type === 'preview') {
     docs.push({ woronaInfo: { name: 'preview-settings-app-extension-worona' } });
   }
 
   const response = [];
-  const cacheTags = [siteId];
+  const tags = [ siteId ];
   const fields = {
     _id: 0,
     [`${service}.${env}.main.file`]: 1,
     [`${service}.namespace`]: 1,
-    ...{
-      dashboard: { [`${service}.menu`]: 1 },
-      app: {},
-    }[service],
+    ...{ dashboard: { [`${service}.menu`]: 1 }, app: {} }[service],
   };
 
   for (let i = 0; i < docs.length; i += 1) {
     const doc = docs[i];
     const pkg = await packages.findOne(
       { name: doc.woronaInfo.name, [service]: { $exists: true } },
-      { fields }
+      { fields },
     );
     if (pkg) {
       const { app, dashboard, ...rest } = pkg;
@@ -54,12 +58,18 @@ export default async (req, res) => {
         namespace: pkg[service].namespace,
       };
       response.push({ ...doc, woronaInfo });
-      cacheTags.push(doc.woronaInfo.name);
+      tags.push(doc.woronaInfo.name);
     }
   }
 
-  response.push({ ...site, woronaInfo: { name: 'site-general-settings-worona', namespace: 'generalSite' } });
+  response.push({
+    ...site,
+    woronaInfo: { name: 'site-general-settings-worona', namespace: 'generalSite' },
+  });
 
-  res.setHeader('Cache-Tag', cacheTags.join(' '));
+  const cacheTags = tags.map(tag => unique(tag).substring(0, 2)).join(' ');
+  if (cacheTags.length > 128) throw new Error('Cache-Tag is bigger than 128 characters.');
+
+  res.setHeader('Cache-Tag', cacheTags);
   res.json(response);
-};
+}

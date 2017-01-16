@@ -1,3 +1,5 @@
+import { unique } from 'shorthash';
+
 /* eslint-disable no-unused-vars */
 export default async (req, res) => {
   const service = req.params.service;
@@ -15,9 +17,10 @@ export default async (req, res) => {
     })
     .toArray();
 
-  const cacheTags = docs.map(doc => doc.name);
+  const cacheTags = docs.map(doc => doc.name).map(tag => unique(tag).substring(0, 2)).join(' ');
+  if (cacheTags.length > 128) throw new Error('Cache-Tag is bigger than 128 characters.');
 
-  res.setHeader('Cache-Tag', cacheTags.join(' '));
+  res.setHeader('Cache-Tag', cacheTags);
   res.json(
     docs.map(doc => {
       const { dashboard, ...rest } = doc;
