@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { unique } from 'shorthash';
 
-/* eslint-disable no-unused-vars */
 export default async (req, res) => {
   const siteId = req.params.siteId;
   const service = req.params.service;
@@ -35,7 +35,7 @@ export default async (req, res) => {
   }
 
   const response = [];
-  const cacheTags = [ siteId ];
+  const tags = [ siteId ];
   const fields = {
     _id: 0,
     [`${service}.${env}.main.file`]: 1,
@@ -58,7 +58,7 @@ export default async (req, res) => {
         namespace: pkg[service].namespace,
       };
       response.push({ ...doc, woronaInfo });
-      cacheTags.push(doc.woronaInfo.name);
+      tags.push(doc.woronaInfo.name);
     }
   }
 
@@ -67,6 +67,9 @@ export default async (req, res) => {
     woronaInfo: { name: 'site-general-settings-worona', namespace: 'generalSite' },
   });
 
-  res.setHeader('Cache-Tag', cacheTags.map(tag => unique(tag).substring(0, 3)).join(' '));
+  const cacheTags = tags.map(tag => unique(tag).substring(0, 2)).join(' ');
+  if (cacheTags.length > 128) throw new Error('Cache-Tag is bigger than 128 characters.');
+
+  res.setHeader('Cache-Tag', cacheTags);
   res.json(response);
 }
