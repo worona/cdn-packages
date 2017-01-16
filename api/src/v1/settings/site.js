@@ -67,7 +67,7 @@ export default async (req, res) => {
     woronaInfo: { name: 'site-general-settings-worona', namespace: 'generalSite' },
   });
 
-  const cacheTags = tags.map(tag => unique(tag).substring(0, 2)).join(' ');
+  const cacheTags = tags.map(tag => unique(tag).substring(0, 3)).join(' ');
   if (cacheTags.length > 128) throw new Error('Cache-Tag is bigger than 128 characters.');
 
   res.setHeader('Cache-Tag', cacheTags);

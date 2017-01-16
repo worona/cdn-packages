@@ -17,7 +17,7 @@ export default async (req, res) => {
     })
     .toArray();
 
-  const cacheTags = docs.map(doc => doc.name).map(tag => unique(tag).substring(0, 2)).join(' ');
+  const cacheTags = docs.map(doc => doc.name).map(tag => unique(tag).substring(0, 3)).join(' ');
   if (cacheTags.length > 128) throw new Error('Cache-Tag is bigger than 128 characters.');
 
   res.setHeader('Cache-Tag', cacheTags);
