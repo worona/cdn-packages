@@ -45,6 +45,7 @@
     "express-mongo-db": "^2.0.3",
     "keycdn": "^0.2.0",
     "mongodb": "^2.1.21",
-    "react-s3-uploader": "^3.3.0"
+    "react-s3-uploader": "^3.3.0",
+    "shorthash": "0.0.2"
   }
 }
