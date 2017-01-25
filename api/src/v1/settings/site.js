@@ -40,7 +40,10 @@ export default async (req, res) => {
     _id: 0,
     [`${service}.${env}.main.file`]: 1,
     [`${service}.namespace`]: 1,
-    ...{ dashboard: { [`${service}.menu`]: 1 }, app: {} }[service],
+    ...({
+      dashboard: { [`${service}.menu`]: 1 },
+      app: { [`${service}.${env}.assets`]: 1 },
+    })[service],
   };
 
   for (let i = 0; i < docs.length; i += 1) {
@@ -55,6 +58,7 @@ export default async (req, res) => {
         ...rest,
         ...doc.woronaInfo,
         main: pkg[service][env].main.file,
+        assets: pkg[service][env].assets,
         namespace: pkg[service].namespace,
       };
       response.push({ ...doc, woronaInfo });
@@ -72,4 +76,4 @@ export default async (req, res) => {
 
   res.setHeader('Cache-Tag', cacheTags);
   res.json(response);
-}
+};
