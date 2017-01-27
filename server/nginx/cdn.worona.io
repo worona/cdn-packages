@@ -12,13 +12,8 @@ map $sent_http_content_type $expires {
 }
 
 server {
-	listen 80;
-	server_name cdn.worona.io backend.worona.io direct.worona.io;
-	return 301 https://$host$request_uri;
-}
-
-server {
   listen 443 ssl;
+  listen 80;
 
   # SSL cert
   ssl_certificate /etc/nginx/ssl/nginx.crt;
