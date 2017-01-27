@@ -7,5 +7,9 @@
     "url": "XXXXXXX.kxcdn.com",
     "apiKey": "XXXXXXXXXX",
     "zoneId": "1234567890"
+  },
+  "mixpanel": {
+    "dev": "XXXXXXXXXXXXXXX",
+    "prod": "XXXXXXXXXXXXXXX"
   }
 }

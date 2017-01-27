@@ -12,8 +12,8 @@ map $sent_http_content_type $expires {
 }
 
 server {
-  listen 80;
   listen 443 ssl;
+  listen 80;
 
   # SSL cert
   ssl_certificate /etc/nginx/ssl/nginx.crt;
