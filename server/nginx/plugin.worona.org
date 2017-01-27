@@ -1,6 +1,6 @@
 server {
 	listen 80;
-	server_name dashboard.worona.org;
+	server_name plugin.worona.org;
 	return 301 https://$host$request_uri;
 }
 
@@ -14,14 +14,11 @@ server {
     # Disable SSLv3 (Poodle bug)
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-    root /var/www/worona-cdn/packages/dist/core-dashboard-worona/dashboard/prod/html;
+    root /var/www/worona-cdn/plugin;
     index index.html;
-    server_name dashboard.worona.org;
-
-    # No Cache
-    expires epoch;
+    server_name plugin.worona.org;
 
     location / {
-  		try_files $uri $uri/ /index.html;
+  		try_files $uri $uri/ /index.html?$request_uri;
   	}
 }
