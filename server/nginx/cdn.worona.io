@@ -27,6 +27,10 @@ server {
   # Cache
   expires $expires;
 
+  location ~/api/v1/chcp/site/.+/index.html {
+    alias /var/www/worona-cdn/packages/dist/worona-cordova-index/index.html;
+  }
+
   location /api {
     proxy_pass http://127.0.0.1:4500;
     proxy_http_version 1.1;
