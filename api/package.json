@@ -44,6 +44,7 @@
     "express": "^4.13.4",
     "express-mongo-db": "^2.0.3",
     "keycdn": "^0.2.0",
+    "md5": "^2.2.1",
     "mixpanel": "^0.6.0",
     "mongodb": "^2.1.21",
     "nodemon": "^1.11.0",
