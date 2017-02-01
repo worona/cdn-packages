@@ -2,7 +2,7 @@ import md5 from 'md5';
 import { readFileSync } from 'fs';
 
 export const generateManifest = async ({ siteId }) => {
-  const file = readFileSync('../packages/dist/worona-cordova-index/index.html', 'utf8');
+  const file = readFileSync('../packages/dist/core-app-worona/app/prod/html/cordova/index.html', 'utf8');
   const hash = md5(file);
   return [ { file: 'index.html', hash } ];
 }

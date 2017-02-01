@@ -9,7 +9,7 @@ server {
     # Disable SSLv3 (Poodle bug)
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-    root /var/www/worona-cdn/packages/dist/core-app-worona/app/prod/html;
+    root /var/www/worona-cdn/packages/dist/core-app-worona/app/prod/html/pwa;
     index index.html;
     server_name app.worona.org;
 
