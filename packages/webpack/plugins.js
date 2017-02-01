@@ -81,7 +81,7 @@ var statsWriterPlugin = function(config) {
     fields: [ 'assets', 'chunks' ],
     transform: function(data) {
       data.assets.forEach(function(asset) {
-        if (!/html\/index\.html/.test(asset.name)) {
+        if (!/html\/((cordova|pwa)\/)?index\.html/.test(asset.name)) {
           var hash = /\.([a-z0-9]{32})\.\w+?$/.exec(asset.name)[1];
           var type = /.+\/(\w+)\//.exec(asset.name)[1];
           var filename = /(.+\/)?(.+)$/.exec(asset.name)[2];
@@ -109,15 +109,15 @@ var statsWriterPlugin = function(config) {
   });
 };
 
-var htmlWebpackPlugin = function(config) {
+var generateHtmlWebpack = function(config, name) {
   var worona = require('../dist/vendors-' + config.service + '-worona/files.json');
   var vendors = worona[config.service][config.env].main.file;
   var title = 'Worona ' + config.service[0].toUpperCase() + config.service.slice(1);
   return new HtmlWebpackPlugin({
-    filename: config.name + '/' + config.service + '/' + config.env + '/html/index.html',
+    filename: config.name + '/' + config.service + '/' + config.env + '/html/' + name + '/index.html',
     inject: false,
     title: title,
-    template: path.resolve('node_modules', config.name, 'html', 'index.html'),
+    template: path.resolve('node_modules', config.name, 'html', name, 'index.html'),
     vendorsFile: 'https://cdn.worona.io/packages/' + vendors,
     appMountId: 'root',
     window: {
@@ -127,6 +127,24 @@ var htmlWebpackPlugin = function(config) {
     minify: { preserveLineBreaks: true, collapseWhitespace: true },
   });
 };
+
+var htmlWebpackPlugin = function(config) {
+  if (config.service === 'dashboard') {
+    return generateHtmlWebpack(config, '');
+  }
+}
+
+var htmlWebpackPluginCordova = function(config) {
+  if (config.service === 'app') {
+    return generateHtmlWebpack(config, 'cordova');
+  }
+}
+
+var htmlWebpackPluginPwa = function(config) {
+  if (config.service === 'app') {
+    return generateHtmlWebpack(config, 'pwa');
+  }
+}
 
 var copyFaviconPlugin = function(config) {
   return new CopyWebpackPlugin([
@@ -149,6 +167,8 @@ module.exports = {
   statsWriterPlugin: statsWriterPlugin,
   fixModuleIdAndChunkIdPlugin: fixModuleIdAndChunkIdPlugin,
   htmlWebpackPlugin: htmlWebpackPlugin,
+  htmlWebpackPluginCordova: htmlWebpackPluginCordova,
+  htmlWebpackPluginPwa: htmlWebpackPluginPwa,
   copyFaviconPlugin: copyFaviconPlugin,
   contextReplacementPlugin: contextReplacementPlugin,
 };
