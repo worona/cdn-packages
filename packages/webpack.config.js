@@ -33,6 +33,8 @@ switch (config.type) {
       plugins.dllReferencePlugin(config),
       plugins.lodashModuleReplacementPlugin(config),
       plugins.htmlWebpackPlugin(config),
+      plugins.htmlWebpackPluginPwa(config),
+      plugins.htmlWebpackPluginCordova(config),
       plugins.statsWriterPlugin(config),
       plugins.copyFaviconPlugin(config),
     ].filter(function(plugin) {
