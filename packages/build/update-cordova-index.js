@@ -1,6 +1,7 @@
 import { spawn } from 'child-process-promise';
 import { sync as rimrafSync } from 'rimraf';
 import { sync as mkdirpSync } from 'mkdirp';
+import purge from './purge';
 
 const update = async () => {
   console.log('=> Updating worona-cordova-index to the latest version.\n');
@@ -17,6 +18,7 @@ const update = async () => {
     ],
     { stdio: 'inherit' },
   );
+  await purge();
   console.log('Everything finished.\n');
 };
 
