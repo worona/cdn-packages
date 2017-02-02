@@ -81,7 +81,7 @@ var statsWriterPlugin = function(config) {
     fields: [ 'assets', 'chunks' ],
     transform: function(data) {
       data.assets.forEach(function(asset) {
-        if (!/html\/((cordova|pwa)\/)?index\.html/.test(asset.name)) {
+        if (!/html\/((cordova|pwa|dashboard)\/)?index\.html/.test(asset.name)) {
           var hash = /\.([a-z0-9]{32})\.\w+?$/.exec(asset.name)[1];
           var type = /.+\/(\w+)\//.exec(asset.name)[1];
           var filename = /(.+\/)?(.+)$/.exec(asset.name)[2];
@@ -130,7 +130,7 @@ var generateHtmlWebpack = function(config, name) {
 
 var htmlWebpackPlugin = function(config) {
   if (config.service === 'dashboard') {
-    return generateHtmlWebpack(config, '');
+    return generateHtmlWebpack(config, 'dashboard');
   }
 }
 
