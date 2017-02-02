@@ -1,6 +1,6 @@
 {
   apps : [{
-    name        : "server",
+    name        : "api",
     script      : "./dist/server.js",
     watch       : true,
     env_dev: {

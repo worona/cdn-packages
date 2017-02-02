@@ -28,7 +28,7 @@ server {
   expires $expires;
 
   location ~/api/v1/chcp/site/.+/index.html {
-    alias /var/www/worona-cdn/packages/dist/worona-cordova-index/index.html;
+    alias /var/www/worona-cdn/packages/dist/core-app-worona/app/prod/html/cordova/index.html;
   }
 
   location /api {
@@ -38,6 +38,13 @@ server {
     proxy_set_header Connection 'upgrade';
     proxy_set_header Host $host;
     proxy_cache_bypass $http_upgrade;
+  }
+
+  merge_slashes off;
+
+  location ~* ^/cors/(https?:/)(.*) {
+    add_header 'cors' $1/$is_args$args;
+    proxy_pass http://127.0.0.1:7779/$1$2$is_args$args;
   }
 
   location /packages/dist {
