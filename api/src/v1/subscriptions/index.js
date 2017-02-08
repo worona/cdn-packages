@@ -1,13 +1,13 @@
 /* eslint-disable new-cap */
 import express from 'express';
-import subscribe from './mixpanel/subscribe';
-import unsubscribe from './mixpanel/unsubscribe';
+import subscription from './mixpanel/subscription';
+import issubscribed from './mixpanel/issubscribed';
 
 const async = fn => (...args) => fn(...args).catch(args[2]);
 
 export default express
   .Router()
   .get('/', (req, res) => res.send('Worona CDN working.'))
-  .post('/mixpanel/:env/subscribe', async(subscribe))
-  .post('/mixpanel/:env/unsubscribe', async(unsubscribe))
+  .post('/mixpanel/:env/issubscribed', async(issubscribed))
+  .post('/mixpanel/:env/:status', async(subscription)) // Status can be 'subscribe' or 'unsubscribe'.
 ;
