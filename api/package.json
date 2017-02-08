@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist/server.js",
     "start": "nodemon src/server.js --watch src/ --exec babel-node",
-    "build": "npm run clean && webpack -p && npm run purge",
+    "build": "npm install && npm run clean && webpack -p && npm run purge",
     "purge": "babel-node build/purge.js"
   },
   "repository": {
@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
+    "body-parser": "^1.16.0",
     "cors": "^2.8.1",
     "express": "^4.13.4",
     "express-mongo-db": "^2.0.3",

@@ -10,6 +10,18 @@ function getQueryByName(name, url) {
 }
 
 $(function() {
+  var apiUrls = {
+    'subscriptions.worona.org': 'https://backend.worona.io',
+    'presubscriptions.worona.org': 'https://prebackend.worona.io',
+    'local': 'http://localhost:4500',
+  }
+  var apiEnvs = {
+    'subscriptions.worona.org': 'prod',
+    'local': 'dev',
+  }
+  var host = window.location.host;
+  var apiUrl = apiUrls[host] || apiUrls.local;
+  var apiEnv = apiEnvs[host] || apiEnvs.local;
   var email = getQueryByName('email');
   var listSlug = getQueryByName('listSlug');
   var listName = getQueryByName('listName');
@@ -32,7 +44,7 @@ $(function() {
 
     var request = $.ajax({
       type: 'post',
-      url: 'https://backend.worona.io/api/v1/subscriptions/mixpanel/prod/unsubscribe',
+      url: apiUrl + '/api/v1/subscriptions/mixpanel/' + apiEnv + '/unsubscribe',
       data: { email: email, listSlug: listSlug },
       timeout: 10000,
     });
