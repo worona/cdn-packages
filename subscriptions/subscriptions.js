@@ -32,7 +32,7 @@ $(function() {
 
     var request = $.ajax({
       type: 'post',
-      url: 'http://localhost:4500/api/v1/subscriptions/mixpanel/dev/unsubscribe',
+      url: 'https://backend.worona.io/api/v1/subscriptions/mixpanel/prod/unsubscribe',
       data: { email: email, listSlug: listSlug },
       timeout: 10000,
     });
