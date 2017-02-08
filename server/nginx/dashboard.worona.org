@@ -14,7 +14,7 @@ server {
     # Disable SSLv3 (Poodle bug)
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-    root /var/www/worona-cdn/packages/dist/core-dashboard-worona/dashboard/prod/html;
+    root /var/www/worona-cdn/packages/dist/core-dashboard-worona/dashboard/prod/html/dashboard;
     index index.html;
     server_name dashboard.worona.org;
 

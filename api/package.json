@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
+    "body-parser": "^1.16.0",
     "cors": "^2.8.1",
     "express": "^4.13.4",
     "express-mongo-db": "^2.0.3",
