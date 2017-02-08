@@ -10,7 +10,10 @@ export default async (req, res) => {
     throw Error('Use only subscribe or unsubscribe options.');
   const subscriptions = req.db.collection('subscriptions');
   const lists = req.db.collection('lists');
-  const { name: listName } = await lists.findOne({ slug: listSlug });
+  const listObject = await lists.findOne({ slug: listSlug });
+  const listName = listObject && listObject.name;
+  if (!listName)
+    throw Error(`The list with slug ${listSlug} is not in the database.`);
   const unsubscribed = status === 'unsubscribe';
   const response = await subscriptions.update(
     { email, listSlug },

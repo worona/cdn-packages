@@ -37,7 +37,7 @@ $(function() {
       timeout: 10000,
     });
 
-    request.done(function (response, textStatus, jqXHR){
+    request.done(function (response){
       $('#dynamic').html('\
         <h2>\
           <a class="button is-white"><span class="icon is-medium"><i class="fa fa-check"></i></span></a>\
@@ -48,8 +48,7 @@ $(function() {
       ');
     });
 
-    // Callback handler that will be called on failure
-    request.fail(function (jqXHR, textStatus, errorThrown){
+    request.fail(function (jqXHR, textStatus, error){
       $('#dynamic').html('\
         <h2>\
           <a class="button is-white"><span class="icon is-medium"><i class="fa fa-times"></i></span></a>\
