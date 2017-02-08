@@ -25,5 +25,5 @@ export default async (req, res) => {
   mixpanel.people.set(email, {
     [`unsubscribed_from_${listSlug}`]: unsubscribed,
   });
-  res.json({ unsubscribed });
+  res.json({ unsubscribed, listName });
 };
