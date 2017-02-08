@@ -1,0 +1,24 @@
+server {
+	listen 80;
+	server_name subscriptions.worona.org;
+	return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+
+    # SSL cert
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    # Disable SSLv3 (Poodle bug)
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    root /var/www/worona-cdn/subscriptions;
+    index index.html;
+    server_name subscriptions.worona.org;
+
+    location / {
+  		try_files $uri $uri/ /index.html?$request_uri;
+  	}
+}
