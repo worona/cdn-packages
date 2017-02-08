@@ -20,8 +20,8 @@ $(function() {
     'local': 'dev',
   }
   var host = window.location.host;
-  var apiUrl = apiUrls[host] || urls.local;
-  var apiEnv = apiEnvs[host] || urls.local;
+  var apiUrl = apiUrls[host] || apiUrls.local;
+  var apiEnv = apiEnvs[host] || apiEnvs.local;
   var email = getQueryByName('email');
   var listSlug = getQueryByName('listSlug');
   var listName = getQueryByName('listName');
