@@ -118,10 +118,10 @@ var generateHtmlWebpack = function(config, name) {
     inject: false,
     title: title,
     template: path.resolve('node_modules', config.name, 'html', name, 'index.html'),
-    vendorsFile: 'https://cdn.worona.io/packages/' + vendors,
+    vendorsFile: 'https://' + config.cdn + '.worona.io/packages/' + vendors,
     appMountId: 'root',
     window: {
-      publicPath: 'https://cdn.worona.io/packages/dist/',
+      publicPath: 'https://' + config.cdn + '.worona.io/packages/dist/',
       __worona__: { prod: config.env === 'prod', remote: true },
     },
     minify: { preserveLineBreaks: true, collapseWhitespace: true },

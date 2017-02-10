@@ -1,12 +1,14 @@
 import md5 from 'md5';
-import { generateManifest } from './chcp-manifest';
+import { generateManifest } from './chcp-manifest';
+
+const cdn = process.env.ISPRE ? 'precdn' : 'cdn';
 
 export default async (req, res) => {
   const siteId = req.params.siteId;
   const manifest = await generateManifest({ siteId });
   const release = md5(JSON.stringify(manifest));
   res.json({
-    content_url: `https://cdn.worona.io/api/v1/chcp/site/${siteId}/`,
+    content_url: `https://${cdn}.worona.io/api/v1/chcp/site/${siteId}/`,
     release,
   });
 };

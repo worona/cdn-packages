@@ -4,7 +4,7 @@ var path = require('path');
 var packages = function(config) {
   return {
     path: path.resolve('dist'),
-    publicPath: 'https://cdn.worona.io/packages/dist/',
+    publicPath: 'https://' + config.cdn + '.worona.io/packages/dist/',
     filename: config.name + '/' + config.service + '/' + config.env + '/' + 'js/' + config.name +
       '.[chunkhash].js',
     library: config.name.replace('-', '_'),
@@ -17,7 +17,7 @@ var packages = function(config) {
 var core = function(config) {
   return {
     path: path.resolve('dist'),
-    publicPath: 'https://cdn.worona.io/packages/dist/',
+    publicPath: 'https://' + config.cdn + '.worona.io/packages/dist/',
     filename: config.name + '/' + config.service + '/' + config.env + '/' + 'js/core-' +
       config.service +
       '.[chunkhash].js',
