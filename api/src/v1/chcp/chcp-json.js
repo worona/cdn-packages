@@ -1,7 +1,8 @@
 import md5 from 'md5';
+import config from '../../../config.json';
 import { generateManifest } from './chcp-manifest';
 
-const cdn = process.env.ISPRE ? 'precdn' : 'cdn';
+const cdn = config.isPre ? 'precdn' : 'cdn';
 
 export default async (req, res) => {
   const siteId = req.params.siteId;

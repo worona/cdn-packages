@@ -1,4 +1,6 @@
-const cdn = process.env.ISPRE ? 'precdn' : 'cdn';
+import config from '../../../config.json';
+
+const cdn = config.isPre ? 'precdn' : 'cdn';
 
 export default async (req, res) => {
   const packages = req.db.collection('packages');
