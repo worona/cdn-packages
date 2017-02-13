@@ -8,6 +8,6 @@ const async = fn => (...args) => fn(...args).catch(args[2]);
 export default express
   .Router()
   .get('/', (req, res) => res.send('Worona CDN working.'))
-  .post('/mixpanel/:env/issubscribed', async(issubscribed))
-  .post('/mixpanel/:env/:status', async(subscription)) // Status can be 'subscribe' or 'unsubscribe'.
+  .post('/mixpanel/issubscribed', async(issubscribed))
+  .post('/mixpanel/:status', async(subscription)) // Status can be 'subscribe' or 'unsubscribe'.
 ;

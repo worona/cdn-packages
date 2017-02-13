@@ -7,30 +7,42 @@ export default async (req, res) => {
   const subscriptions = req.db.collection('subscriptions');
   const lists = req.db.collection('lists');
   const users = req.db.collection('users');
-  if (!listSlug || !email) throw Error('listSlug or email parameters missing');
+  if (!listSlug || !email) return res.json({ error: 'listSlug or email parameters missing' });
   const status = req.params.status;
   if (status !== 'subscribe' && status !== 'unsubscribe')
-    throw Error('Use only subscribe or unsubscribe options.');
-  const listObject = await lists.findOne({ slug: listSlug });
-  const user = await users.findOne({ 'emails.0.address': email }, { fields: { _id: 1 } });
-  const userId = user ? user._id : null;
-  console.log(userId);
-  const listName = listObject && listObject.name;
-  if (!listName)
-    throw Error(`The list with slug ${listSlug} is not in the database.`);
+    return res.json({ error: 'Use only subscribe or unsubscribe options.' });
+  const list = await lists.findOne({ slug: listSlug });
+  if (!list) return res.json({ error: `The list with slug ${listSlug} is not in the database.` });
+  let distinctId = email;
+  if (list.convertTouserId) {
+    const user = await users.findOne({ 'emails.0.address': email }, { fields: { _id: 1 } });
+    if (!user) return res.json({ error: 'User with this email address not found in the database' });
+    distinctId = user._id;
+  }
   const unsubscribed = status === 'unsubscribe';
   const response = await subscriptions.update(
-    { email, listSlug },
-    { email, listSlug, unsubscribed },
+    { distinctId, listSlug },
+    { distinctId, email, listSlug, unsubscribed },
     { upsert: true },
   );
-  if (response.result.ok !== 1) throw new Error('Unable to save the subscription to the database.');
-  const mixpanel = Mixpanel.init(config.mixpanel[req.params.env], { protocol: 'https' });
-  const payload = { distinct_id: email, email, listSlug, unsubscribed, listName };
-  const event = status === 'subscribe' ? 'SUBSCRIBED' : 'UNSUBSCRIBED';
-  mixpanel.track(`${event} - ${listName}`, payload);
-  mixpanel.people.set(email, {
-    [`unsubscribed_from_${listSlug}`]: unsubscribed,
-  });
-  res.json({ unsubscribed, listName });
+  if (response.result.ok !== 1)
+    return res.json({ error: 'Unable to save the subscription to the database.' });
+  if (list.service === 'mixpanel') {
+    const mixpanel = Mixpanel.init(config.mixpanel[list.project], { protocol: 'https' });
+    const payload = {
+      distinct_id: distinctId,
+      distinctId,
+      email,
+      listSlug,
+      unsubscribed,
+      listName: list.name,
+    };
+    const event = status === 'subscribe' ? 'SUBSCRIBED' : 'UNSUBSCRIBED';
+    mixpanel.track(`${event} - ${list.name}`, payload);
+    mixpanel.people.set(email, {
+      [`unsubscribed_from_${listSlug}`]: unsubscribed,
+    });
+    return res.json({ unsubscribed, listName: list.name });
+  }
+  return res.json({ error: 'Only mixpanel subscriptions are supported yet.' });
 };
