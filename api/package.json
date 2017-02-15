@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "rimraf dist/server.js",
     "start": "nodemon src/server.js --watch src/ --exec babel-node",
+    "start:debug": "nodemon src/server.js --watch src/ --exec \"babel-node --inspect --debug-brk\"",
     "build": "npm install && npm run clean && webpack -p && npm run purge",
     "purge": "babel-node build/purge.js"
   },
@@ -45,11 +46,13 @@
     "express": "^4.13.4",
     "express-mongo-db": "^2.0.3",
     "keycdn": "^0.2.0",
+    "lodash": "^4.17.4",
     "md5": "^2.2.1",
     "mixpanel": "^0.6.0",
     "mongodb": "^2.1.21",
     "nodemon": "^1.11.0",
     "react-s3-uploader": "^3.3.0",
-    "shorthash": "0.0.2"
+    "shorthash": "0.0.2",
+    "superagent": "^3.4.1"
   }
 }
