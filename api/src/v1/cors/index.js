@@ -15,7 +15,7 @@ export default express
       else
         res.json(result.body);
     } catch (error) {
-      res.json(error);
+      res.json({ error });
     }
   }))
 ;
