@@ -9,7 +9,8 @@
     "zoneId": "1234567890"
   },
   "mixpanel": {
-    "dev": "XXXXXXXXXXXXXXX",
-    "prod": "XXXXXXXXXXXXXXX"
-  }
+    "worona10": "XXXXXXXXXXXXXXX",
+    "plugin": "XXXXXXXXXXXXXXX"
+  },
+  "isPre": false
 }
