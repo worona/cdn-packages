@@ -6,15 +6,17 @@ import install from './install';
 import webpack from './webpack';
 import save from './save';
 import purge from './purge';
+import configFile from './config.json';
 
 const update = async ({ add }) => {
+  const cdn = configFile.isPre ? 'precdn' : 'cdn';
   const packages = add ? [ await inquire() ] : await allPackages({ force: argv.force });
   for (let i = 0; i < packages.length; i += 1) {
     const { name, version } = packages[i];
     console.log(`\nUpdating package ${name} to ${version}. Please wait...\n`);
     await install({ name, version });
     const { worona, description, keywords } = require(`../node_modules/${name}/package.json`);
-    const config = { ...worona, name, version, description, keywords };
+    const config = { ...worona, name, version, description, keywords, cdn };
     const files = await webpack(config);
     await save(merge(config, files));
   }

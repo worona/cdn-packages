@@ -6,9 +6,8 @@
   "main": "index.js",
   "scripts": {
     "update": "babel-node build/update.js",
-    "update:one": "babel-node build/update.js --add",
-    "update:force": "babel-node build/update.js --force",
-    "update:cordova-index": "babel-node build/update-cordova-index.js"
+    "update:one": "npm run update -- --add",
+    "update:force": "npm run update -- --force"
   },
   "repository": {
     "type": "git",
