@@ -6,9 +6,10 @@ import install from './install';
 import webpack from './webpack';
 import save from './save';
 import purge from './purge';
+import configFile from './config.json';
 
 const update = async ({ add }) => {
-  const cdn = process.env.ISPRE ? 'precdn' : 'cdn';
+  const cdn = configFile.isPre ? 'precdn' : 'cdn';
   const packages = add ? [ await inquire() ] : await allPackages({ force: argv.force });
   for (let i = 0; i < packages.length; i += 1) {
     const { name, version } = packages[i];
