@@ -5,9 +5,9 @@ import { isEmpty } from 'lodash';
 
 const async = fn => (...args) => fn(...args).catch(args[2]);
 
-export default express
-  .Router()
-  .get(/\/(.+)/, async(async (req, res) => {
+export default express.Router().get(
+  /\/(.+)/,
+  async(async (req, res) => {
     try {
       const result = await request(req.url.replace(/^(\/)/, ''));
       if (isEmpty(result.body))
@@ -17,5 +17,5 @@ export default express
     } catch (error) {
       res.json({ error });
     }
-  }))
-;
+  }),
+);
