@@ -4,7 +4,7 @@ import { spawn } from 'child-process-promise';
 import { writeFileSync } from 'fs';
 
 export default async config => {
-  const { name } = config;
+  const { name, cdn } = config;
   const envs = [ 'dev', 'prod' ];
   const services = [ 'dashboard', 'app', 'amp', 'fbia' ].filter(service => config[service]);
   if (services.length === 0)
@@ -29,6 +29,8 @@ export default async config => {
           service,
           '--env',
           env,
+          '--cdn',
+          cdn,
         ],
         { stdio: 'inherit' },
       );
