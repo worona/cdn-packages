@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 import express from 'express';
-import subscription from './mixpanel/subscription';
-import issubscribed from './mixpanel/is-unsubscribed';
+import subscription from './subscription';
+import issubscribed from './is-unsubscribed';
 
 const async = fn => (...args) => fn(...args).catch(args[2]);
 
