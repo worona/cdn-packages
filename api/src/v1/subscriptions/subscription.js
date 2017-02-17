@@ -1,5 +1,5 @@
 import Mixpanel from 'mixpanel';
-import config from '../../../../config.json';
+import config from '../../../config.json';
 
 export default async (req, res) => {
   const listSlug = req.body.listSlug;
