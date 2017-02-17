@@ -49,10 +49,15 @@ export default async (req, res) => {
       listName: list.name,
     };
     const event = status === 'subscribe' ? 'SUBSCRIBED' : 'UNSUBSCRIBED';
-    mixpanel.track(`${event} - ${list.name}`, payload);
-    mixpanel.people.set(email, {
+    mixpanel.track(`${event} - ${listSlug}`, payload);
+    mixpanel.people.set(distinctId, {
       [`unsubscribed_from_${listSlug}`]: unsubscribed,
     });
+    if (!list.convertTouserId) {
+      mixpanel.people.set_once(distinctId, {
+        $email: email,
+      });
+    }
     return res.json({ unsubscribed, listName: list.name });
   }
 
