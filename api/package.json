@@ -8,7 +8,7 @@
     "clean": "rimraf dist/server.js",
     "start": "nodemon src/server.js --watch src/ --exec babel-node",
     "debug": "nodemon src/server.js --watch src/ --exec \"babel-node --inspect --debug-brk\"",
-    "build": "npm install && npm run clean && webpack -p && npm run purge",
+    "build": "npm install && webpack -p && npm run purge",
     "purge": "babel-node build/purge.js"
   },
   "repository": {
