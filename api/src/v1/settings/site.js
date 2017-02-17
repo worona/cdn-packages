@@ -11,7 +11,7 @@ export default async (req, res) => {
   const sites = req.db.collection('sites');
 
   const site = await sites.findOne({ _id: siteId }, {
-    fields: { userIds: 0, createdAt: 0, modifiedAt: 0, status: 0 },
+    fields: { createdAt: 0, modifiedAt: 0, status: 0 },
   });
 
   if (!site) {
@@ -68,6 +68,7 @@ export default async (req, res) => {
 
   response.push({
     ...site,
+    userIds: site.userIds.join(', '),
     woronaInfo: { name: 'site-general-settings-worona', namespace: 'generalSite' },
   });
 
