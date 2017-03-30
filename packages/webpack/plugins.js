@@ -117,6 +117,7 @@ var generateHtmlWebpack = function(config, name) {
     filename: config.name + '/' + config.service + '/' + config.env + '/html/' + name + '/index.html',
     inject: false,
     title: title,
+    cdn: config.cdn,
     template: path.resolve('node_modules', config.name, 'html', name, 'index.html'),
     vendorsFile: 'https://' + config.cdn + '.worona.io/packages/' + vendors,
     appMountId: 'root',
