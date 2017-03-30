@@ -123,7 +123,7 @@ var generateHtmlWebpack = function(config, name) {
     appMountId: 'root',
     window: {
       publicPath: 'https://' + config.cdn + '.worona.io/packages/dist/',
-      __worona__: { prod: config.env === 'prod', remote: true },
+      __worona__: { prod: config.env === 'prod', remote: true, pre: config.cdn === 'precdn' },
     },
     minify: { preserveLineBreaks: true, collapseWhitespace: true },
   });
