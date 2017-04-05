@@ -117,12 +117,13 @@ var generateHtmlWebpack = function(config, name) {
     filename: config.name + '/' + config.service + '/' + config.env + '/html/' + name + '/index.html',
     inject: false,
     title: title,
+    cdn: config.cdn,
     template: path.resolve('node_modules', config.name, 'html', name, 'index.html'),
     vendorsFile: 'https://' + config.cdn + '.worona.io/packages/' + vendors,
     appMountId: 'root',
     window: {
       publicPath: 'https://' + config.cdn + '.worona.io/packages/dist/',
-      __worona__: { prod: config.env === 'prod', remote: true },
+      __worona__: { prod: config.env === 'prod', remote: true, pre: config.cdn === 'precdn' },
     },
     minify: { preserveLineBreaks: true, collapseWhitespace: true },
   });
