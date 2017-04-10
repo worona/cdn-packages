@@ -1,5 +1,4 @@
 import rimraf from 'rimraf';
-import path from 'path';
 import { spawn } from 'child-process-promise';
 import { writeFileSync } from 'fs';
 
@@ -9,7 +8,6 @@ export default async config => {
   const services = [ 'dashboard', 'app', 'amp', 'fbia' ].filter(service => config[service]);
   if (services.length === 0)
     throw new Error('No service found. Please check the package json.');
-  rimraf.sync(path.resolve('dist', name));
   const files = {};
   for (let i = 0; i < services.length; i += 1) {
     for (let j = 0; j < envs.length; j += 1) {
