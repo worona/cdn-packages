@@ -100,9 +100,10 @@ switch (config.type) {
       output: output.packages(config),
       module: { loaders: loadersArr },
       resolve: { extensions: [ '', '.js', '.jsx' ] },
-      postcss: function() {
-        return [ require('postcss-cssnext')() ];
-      },
+      postcss: function() { return [
+        require('postcss-import')(),
+        require('postcss-cssnext')(), 
+      ]; },
       stats: { children: false },
       plugins: pluginsArr,
     };
