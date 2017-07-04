@@ -40,6 +40,7 @@
     "webpack": "^1.13.3"
   },
   "dependencies": {
+    "aws-sdk": "^2.78.0",
     "babel-polyfill": "^6.16.0",
     "body-parser": "^1.16.0",
     "cors": "^2.8.1",
