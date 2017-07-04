@@ -30,15 +30,13 @@ export default async (req, res) => {
   });
 
   try {
-    console.log('query:', req.query);
     const url = await getSignedUrl({
       s3,
       Key: `sites/${req.query.siteId}/${req.query.imgType}/${req.query.objectName}`,
     });
-    console.log('succeed:', url);
+
     res.send(url);
   } catch (error) {
-    console.log('error:', error);
     res.send(error);
   }
 };
