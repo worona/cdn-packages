@@ -30,6 +30,7 @@ export default async (req, res) => {
           name: 1,
           shortName: 1,
           description: 1,
+          appName: 1,
           iconSrc: 1,
         },
       }
