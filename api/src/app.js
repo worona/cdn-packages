@@ -9,7 +9,7 @@ import s3 from './v1/s3';
 import chcp from './v1/chcp';
 import subscriptions from './v1/subscriptions';
 import cors from './v1/cors';
-
+import manifest from './v1/manifest';
 
 const app = express();
 
@@ -21,5 +21,6 @@ app.use('/api/v1/s3', s3);
 app.use('/api/v1/chcp', chcp);
 app.use('/api/v1/subscriptions', subscriptions);
 app.use('/api/v1/cors', cors);
+app.use('/api/v1/manifest', manifest);
 
 export default app;
