@@ -2,10 +2,10 @@ import { unique } from 'shorthash';
 
 export default async (req, res) => {
   const { siteId } = req.params;
-  const db = req.db.collection('settings-live');
 
-  // This gets the necessary docs from the database.
-  const docs = await db
+  // This gets the settings from the database.
+  const rawSettings = await req.db
+    .collection('settings-live')
     .find(
       {
         'woronaInfo.siteId': siteId,
@@ -20,6 +20,9 @@ export default async (req, res) => {
           {
             'woronaInfo.name': 'publish-native-app-extension-worona',
           },
+          {
+            'woronaInfo.name': 'site-general-settings-worona',
+          },
         ],
       },
       {
@@ -30,6 +33,7 @@ export default async (req, res) => {
           name: 1,
           shortName: 1,
           description: 1,
+          url: 1,
           appName: 1,
           iconSrc: 1,
         },
@@ -37,14 +41,30 @@ export default async (req, res) => {
     )
     .toArray();
 
-  // This maps the docs to a single object.
-  const settings = docs.reduce(
+  // This gets the url from the database.
+  const sites = await req.db
+    .collection('sites')
+    .find(
+      { _id: siteId },
+      {
+        fields: {
+          _id: 0,
+          url: 1,
+        },
+      }
+    )
+    .toArray();
+
+  // This reduces the settings to a single object.
+  const settings = rawSettings.reduce(
     (final, current) =>
       Object.assign(
         final,
         Object.keys(current).reduce((a, b) => Object.assign(a, { [b]: current[b] }), {})
       ),
-    {}
+    {
+      url: sites[0].url,
+    }
   );
 
   // This is the manifest to be sent.
@@ -52,9 +72,9 @@ export default async (req, res) => {
     name: settings.name || settings.appName,
     short_name: settings.shortName || settings.appName,
     description: settings.description || '',
-    start_url: '/',
-    theme_color: '#FFF',
-    background_color: settings.mainColor || '',
+    start_url: settings.url,
+    theme_color: settings.mainColor || '',
+    background_color: '#FFF',
     dir: 'auto',
     display: 'standalone',
     orientation: 'portrait',
